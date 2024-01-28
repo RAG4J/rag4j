@@ -48,7 +48,7 @@ public class AppRetrievalQualityVasa {
         KeyLoader keyLoader = new KeyLoader();
         embedder = new OpenAIEmbedder(keyLoader);
         WeaviateAccess weaviateAccess = new WeaviateAccess(keyLoader);
-        Retriever retriever = new WeaviateRetriever(weaviateAccess);
+        Retriever retriever = new WeaviateRetriever(weaviateAccess, embedder);
         printQuality(retriever, embedder);
     }
 }

@@ -13,7 +13,7 @@ public class RAGArchitectureTest {
     @ArchTest
     public static final ArchRule weaviatePackageRule = classes()
             .that().resideInAPackage("..weaviate..")
-            .should().onlyBeAccessed().byAnyPackage("org.rag4j", "org.rag4j.weaviate..");
+            .should().onlyBeAccessed().byAnyPackage("org.rag4j.examples", "org.rag4j.weaviate..");
     @ArchTest
     public static final ArchRule utilPackageRule = classes()
             .that().resideInAPackage("org.rag4j.util..")

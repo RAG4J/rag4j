@@ -9,6 +9,7 @@ import io.weaviate.client.v1.graphql.query.argument.WhereArgument;
 import io.weaviate.client.v1.graphql.query.fields.Field;
 import org.rag4j.domain.Chunk;
 import org.rag4j.domain.RelevantChunk;
+import org.rag4j.indexing.Embedder;
 import org.rag4j.retrieval.ChunkProcessor;
 import org.rag4j.retrieval.Retriever;
 import org.rag4j.weaviate.WeaviateAccess;
@@ -23,15 +24,16 @@ public class WeaviateRetriever implements Retriever {
     private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(WeaviateRetriever.class);
 
     private final WeaviateAccess weaviateAccess;
+    private final Embedder embedder;
 
-    public WeaviateRetriever(WeaviateAccess weaviateAccess) {
+    public WeaviateRetriever(WeaviateAccess weaviateAccess, Embedder embedder) {
         this.weaviateAccess = weaviateAccess;
+        this.embedder = embedder;
     }
 
     @Override
     public List<RelevantChunk> findRelevantChunks(String question, int maxResults) {
-        // This works with a configured OpenAI key, but we should maybe not use it.
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return findRelevantChunks(question, embedder.embed(question), maxResults);
     }
 
     @Override

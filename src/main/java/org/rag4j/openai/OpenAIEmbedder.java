@@ -18,20 +18,26 @@ import static org.rag4j.openai.OpenAIFactory.obtainsClient;
  */
 public class OpenAIEmbedder implements Embedder {
     private final OpenAIClient client;
+    private final String model;
 
     public OpenAIEmbedder() {
-        this(new KeyLoader());
+        this(new KeyLoader(), OpenAIConstants.DEFAULT_EMBEDDING);
     }
 
     public OpenAIEmbedder(KeyLoader keyLoader) {
+        this(keyLoader, OpenAIConstants.DEFAULT_EMBEDDING);
+    }
+
+    public OpenAIEmbedder(KeyLoader keyLoader, String model) {
         this.client = obtainsClient(keyLoader.getOpenAIKey());
+        this.model = model;
     }
 
     @Override
     public List<Double> embed(String text) {
         EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(Collections.singletonList(text));
 
-        Embeddings embeddings = this.client.getEmbeddings(ADA2, embeddingsOptions);
+        Embeddings embeddings = this.client.getEmbeddings(this.model, embeddingsOptions);
 
         return embeddings.getData().getFirst().getEmbedding();
     }

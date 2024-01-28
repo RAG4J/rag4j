@@ -17,12 +17,15 @@ public class OpenAIAnswerGenerator implements AnswerGenerator {
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(OpenAIAnswerGenerator.class);
     private final OpenAIClient client;
 
+    private final String model;
+
     public OpenAIAnswerGenerator() {
-        this(new KeyLoader());
+        this(new KeyLoader(), OpenAIConstants.DEFAULT_MODEL);
     }
 
-    public OpenAIAnswerGenerator(KeyLoader keyLoader) {
+    public OpenAIAnswerGenerator(KeyLoader keyLoader, String model) {
         this.client = OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey());
+        this.model = model;
     }
 
     @Override
@@ -35,7 +38,7 @@ public class OpenAIAnswerGenerator implements AnswerGenerator {
         String contextMessage = String.format("Context: %s\nQuestion: %s\nAnswer:", question, context);
         chatMessages.add(new ChatRequestUserMessage(contextMessage));
 
-        ChatCompletions chatCompletions = client.getChatCompletions(OpenAIConstants.GPT4, new ChatCompletionsOptions(chatMessages));
+        ChatCompletions chatCompletions = client.getChatCompletions(this.model, new ChatCompletionsOptions(chatMessages));
 
         CompletionsUsage usage = chatCompletions.getUsage();
         LOGGER.info("Usage: number of prompt token is {}, "

@@ -4,6 +4,7 @@ import com.azure.ai.openai.OpenAIClient;
 import org.rag4j.generation.AnswerGenerator;
 import org.rag4j.generation.ObservedAnswerGenerator;
 import org.rag4j.openai.OpenAIAnswerGenerator;
+import org.rag4j.openai.OpenAIConstants;
 import org.rag4j.openai.OpenAIFactory;
 import org.rag4j.quality.AnswerQuality;
 import org.rag4j.quality.AnswerQualityService;
@@ -18,7 +19,7 @@ import org.rag4j.util.KeyLoader;
 public class AppAnswerGenerator {
     public static void main(String[] args) {
         KeyLoader keyLoader = new KeyLoader();
-        AnswerGenerator answerGenerator = new OpenAIAnswerGenerator(keyLoader);
+        AnswerGenerator answerGenerator = new OpenAIAnswerGenerator(keyLoader, OpenAIConstants.DEFAULT_MODEL);
 
         String question = "Since when was the Vasa available for the public to visit?";
         String context = "By Friday 16 February 1962, the ship is ready to be displayed to the general public at the " +

@@ -5,6 +5,7 @@ import org.rag4j.generation.AnswerGenerator;
 import org.rag4j.generation.ObservedAnswerGenerator;
 import org.rag4j.indexing.Embedder;
 import org.rag4j.openai.OpenAIAnswerGenerator;
+import org.rag4j.openai.OpenAIConstants;
 import org.rag4j.openai.OpenAIEmbedder;
 import org.rag4j.openai.OpenAIFactory;
 import org.rag4j.quality.AnswerQualityService;
@@ -29,7 +30,7 @@ public class AppQualityLLM {
         WeaviateAccess weaviateAccess = new WeaviateAccess(keyLoader);
         Embedder embedder = new OpenAIEmbedder(keyLoader);
 
-        Retriever retriever = new WeaviateRetriever(weaviateAccess);
+        Retriever retriever = new WeaviateRetriever(weaviateAccess, embedder);
         ObservedRetriever observedRetriever = new ObservedRetriever(retriever);
         WindowRetrievalStrategy windowRetrievalStrategy = new WindowRetrievalStrategy(observedRetriever, 1);
 
@@ -44,7 +45,7 @@ public class AppQualityLLM {
         List<AnswerQuality> overallQuality = exampleSentences.stream().map(question -> {
             RetrievalOutput retrievalOutput = windowRetrievalStrategy.retrieve(question, embedder.embed(question), 1, true);
 
-            AnswerGenerator answerGenerator = new OpenAIAnswerGenerator(keyLoader);
+            AnswerGenerator answerGenerator = new OpenAIAnswerGenerator(keyLoader, OpenAIConstants.DEFAULT_MODEL);
             ObservedAnswerGenerator observedAnswerGenerator = new ObservedAnswerGenerator(answerGenerator);
             String answer = observedAnswerGenerator.generateAnswer(question, retrievalOutput.constructContext());
             System.out.printf("Question: %s%nAnswer: %s%n", question, answer);

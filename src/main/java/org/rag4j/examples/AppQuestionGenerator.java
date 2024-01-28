@@ -2,10 +2,13 @@ package org.rag4j.examples;
 
 import com.azure.ai.openai.OpenAIClient;
 import org.rag4j.domain.InputDocument;
+import org.rag4j.generation.QuestionGenerator;
 import org.rag4j.indexing.Embedder;
 import org.rag4j.indexing.SingleChunkSplitter;
+import org.rag4j.openai.OpenAIConstants;
 import org.rag4j.openai.OpenAIEmbedder;
 import org.rag4j.openai.OpenAIFactory;
+import org.rag4j.openai.OpenAIQuestionGenerator;
 import org.rag4j.quality.QuestionGeneratorService;
 import org.rag4j.quality.RetrievalQuality;
 import org.rag4j.quality.RetrievalQualityService;
@@ -33,7 +36,8 @@ public class AppQuestionGenerator {
 
         OpenAIClient client = OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey());
 
-        QuestionGeneratorService questionGeneratorService = new QuestionGeneratorService(client, contentStore);
+        QuestionGenerator questionGenerator = new OpenAIQuestionGenerator(keyLoader, OpenAIConstants.DEFAULT_MODEL);
+        QuestionGeneratorService questionGeneratorService = new QuestionGeneratorService(contentStore, questionGenerator);
         QuestionCollectorProcessor questionCollectorProcessor = new QuestionCollectorProcessor(questionGeneratorService);
         contentStore.loopOverChunks(questionCollectorProcessor);
 
