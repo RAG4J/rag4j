@@ -9,6 +9,8 @@ import org.rag4j.weaviate.indexer.WeaviateChunkClassBuilder;
 import org.rag4j.weaviate.indexer.WeaviateChunkIndexer;
 import org.rag4j.weaviate.indexer.WeaviateContentStore;
 
+import static org.rag4j.weaviate.WeaviateContants.CLASS_NAME;
+
 /**
  * Shows how to index documents into Weaviate. We have abstracted creating the schema for Weaviate from the actual
  * indexing. The class {@link WeaviateAccess} contains the main methods for interacting with Weaviate.
@@ -17,7 +19,7 @@ public class AppIndexerWeaviate {
 
     private static void createWeaviateSchema(WeaviateAccess weaviateAccess) {
         weaviateAccess.forceCreateClass(WeaviateChunkClassBuilder.build());
-        String schema = weaviateAccess.getSchemaForClass("Chunk");
+        String schema = weaviateAccess.getSchemaForClass(CLASS_NAME);
         System.out.println(schema);
     }
 

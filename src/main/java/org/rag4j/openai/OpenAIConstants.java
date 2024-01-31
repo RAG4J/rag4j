@@ -5,7 +5,7 @@ package org.rag4j.openai;
  */
 public interface OpenAIConstants {
     String GPT4 = "gpt-4";
-    String GPT4TURBO = "gpt-4-turbo";
+    String GPT4TURBO = "gpt-4-turbo-preview";
     String GPT35 = "gpt-3.5-turbo";
 
     String DEFAULT_MODEL = GPT4;

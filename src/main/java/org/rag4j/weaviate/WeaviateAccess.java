@@ -14,6 +14,8 @@ import org.slf4j.Logger;
 
 import java.util.Map;
 
+import static org.rag4j.weaviate.WeaviateContants.CLASS_NAME;
+
 @Getter
 public class WeaviateAccess {
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(WeaviateAccess.class);
@@ -27,6 +29,7 @@ public class WeaviateAccess {
         Config config = new Config("https", keyLoader.getWeaviateURL());
         try {
             this.client = WeaviateAuthClient.apiKey(config, keyLoader.getWeaviateAPIKey());
+            LOGGER.info("Connected to Weaviate host: {}", keyLoader.getWeaviateURL());
         } catch (AuthException e) {
             LOGGER.error("Cannot connect to Weaviate.",e);
             throw new WeaviateException("Cannot connect to Weaviate: " + e.getMessage());
@@ -104,12 +107,19 @@ public class WeaviateAccess {
         }
     }
 
-    private void logClusterMeta() {
+    public void logClusterMeta() {
         Result<Meta> meta = client.misc().metaGetter().run();
         if (meta.getError() == null) {
             LOGGER.info("meta.hostname: {}", meta.getResult().getHostname());
             LOGGER.info("meta.version: {}", meta.getResult().getVersion());
             LOGGER.info("meta.modules: {}", meta.getResult().getModules());
+            LOGGER.info("Class name: {}", CLASS_NAME);
+            if (doesClassExist(CLASS_NAME)) {
+                LOGGER.info("Class {} exists", CLASS_NAME);
+                LOGGER.info("schema: {}", getSchemaForClass(CLASS_NAME));
+            } else {
+                LOGGER.info("Class {} does not exist", CLASS_NAME);
+            }
         } else {
             LOGGER.error("Error: {}", meta.getError().getMessages());
         }

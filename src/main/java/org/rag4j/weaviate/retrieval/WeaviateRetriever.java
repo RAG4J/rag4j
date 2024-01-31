@@ -17,6 +17,7 @@ import org.rag4j.weaviate.WeaviateException;
 
 import java.util.List;
 
+import static org.rag4j.weaviate.WeaviateContants.CLASS_NAME;
 import static org.rag4j.weaviate.retrieval.WeaviateResponseParser.parseGraphQLRelevantResponse;
 import static org.rag4j.weaviate.retrieval.WeaviateResponseParser.parseGraphQLResponseList;
 
@@ -43,7 +44,7 @@ public class WeaviateRetriever implements Retriever {
                 .toArray(Float[]::new);
 
         Result<GraphQLResponse> result = weaviateAccess.getClient().graphQL().get()
-                .withClassName("Chunk")
+                .withClassName(CLASS_NAME)
                 .withFields(
                         Field.builder().name("text").build(),
                         Field.builder().name("documentId").build(),
@@ -71,7 +72,7 @@ public class WeaviateRetriever implements Retriever {
     public Chunk getChunk(String documentId, int chunkId) {
 
         Result<GraphQLResponse> result = weaviateAccess.getClient().graphQL().get()
-                .withClassName("Chunk")
+                .withClassName(CLASS_NAME)
                 .withFields(
                         Field.builder().name("text").build(),
                         Field.builder().name("documentId").build(),
@@ -113,7 +114,7 @@ public class WeaviateRetriever implements Retriever {
         boolean done = false;
         while (!done) {
             Result<GraphQLResponse> result = weaviateAccess.getClient().graphQL().get()
-                    .withClassName("Chunk")
+                    .withClassName(CLASS_NAME)
                     .withFields(
                             Field.builder().name("text").build(),
                             Field.builder().name("documentId").build(),

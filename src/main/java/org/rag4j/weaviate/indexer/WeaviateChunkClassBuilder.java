@@ -10,6 +10,8 @@ import org.rag4j.weaviate.schema.Text2VecOpenAIPropertyModuleConfig;
 import java.util.List;
 import java.util.Map;
 
+import static org.rag4j.weaviate.WeaviateContants.CLASS_NAME;
+
 public class WeaviateChunkClassBuilder {
 
 
@@ -70,7 +72,7 @@ public class WeaviateChunkClassBuilder {
                         .build()
         );
         return WeaviateClass.builder()
-                .className("Chunk")
+                .className(CLASS_NAME)
                 .description("A chunk of text to be indexed by Weaviate")
                 .vectorizer("text2vec-openai")
                 .moduleConfig(Map.of(

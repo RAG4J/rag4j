@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.rag4j.weaviate.WeaviateContants.CLASS_NAME;
+
 public class WeaviateResponseParser {
     public static List<Chunk> parseGraphQLResponseList(GraphQLResponse response) {
         Map<String,Object> data = parseData(response);
@@ -81,7 +83,7 @@ public class WeaviateResponseParser {
 
     @SuppressWarnings("unchecked")
     private static List<Map<String,Object>> parseChunks(Map<String,Object> get) {
-        Object chunks = get.get("Chunk");
+        Object chunks = get.get(CLASS_NAME);
         if (chunks instanceof List<?>) {
             return (List<Map<String,Object>>) chunks;
         } else {

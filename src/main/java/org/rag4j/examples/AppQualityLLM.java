@@ -49,6 +49,7 @@ public class AppQualityLLM {
             ObservedAnswerGenerator observedAnswerGenerator = new ObservedAnswerGenerator(answerGenerator);
             String answer = observedAnswerGenerator.generateAnswer(question, retrievalOutput.constructContext());
             System.out.printf("Question: %s%nAnswer: %s%n", question, answer);
+            System.out.printf("Context: %s%n", retrievalOutput.constructContext());
 
             RAGObserver observer = RAGTracker.getRAGObserver();
             RAGTracker.cleanup();
@@ -58,10 +59,10 @@ public class AppQualityLLM {
 
             AnswerQualityService answerQuality = new AnswerQualityService(OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey()));
             AnswerQuality quality = answerQuality.determineQualityOfAnswer(observer);
-            System.out.printf("Quality of answer compared to the question: %d%n",
-                    quality.getAnswerToQuestionQuality().getQuality());
-            System.out.printf("Quality of answer coming from the context: %d%n",
-                    quality.getAnswerFromContextQuality().getQuality());
+            System.out.printf("Quality of answer compared to the question: %d, Reason: %s%n",
+                    quality.getAnswerToQuestionQuality().getQuality(), quality.getAnswerToQuestionQuality().getReason());
+            System.out.printf("Quality of answer coming from the context: %d, Reason %s%n",
+                    quality.getAnswerFromContextQuality().getQuality(), quality.getAnswerFromContextQuality().getReason());
 
             return quality;
         }).toList();

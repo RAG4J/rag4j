@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.rag4j.weaviate.WeaviateContants.CLASS_NAME;
+
 public class WeaviateChunkIndexer {
     private final WeaviateAccess weaviateAccess;
 
@@ -28,7 +30,7 @@ public class WeaviateChunkIndexer {
 
         String documentId = UUID.randomUUID().toString();
 
-        weaviateAccess.addDocument("Chunk", documentId, properties, floatVector);
+        weaviateAccess.addDocument(CLASS_NAME, documentId, properties, floatVector);
 
         return documentId;
     }
