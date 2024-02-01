@@ -1,0 +1,51 @@
+package org.rag4j.indexing;
+
+import com.knuddels.jtokkit.Encodings;
+import com.knuddels.jtokkit.api.Encoding;
+import com.knuddels.jtokkit.api.EncodingRegistry;
+import com.knuddels.jtokkit.api.EncodingType;
+import org.rag4j.domain.Chunk;
+import org.rag4j.domain.InputDocument;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Splits an {@link InputDocument} into {@link Chunk}s of a maximum number of tokens. The tokens are obtained by
+ * encoding the text of the document using the {@link EncodingType#CL100K_BASE} encoding. The chunks of tokens are
+ * decoded back into text.
+ */
+public class MaxTokenSplitter implements Splitter {
+    private Encoding encoding;
+    private int maxTokens;
+
+    public MaxTokenSplitter(int maxTokens) {
+        this.maxTokens = maxTokens;
+        EncodingRegistry registry = Encodings.newDefaultEncodingRegistry();
+        this.encoding = registry.getEncoding(EncodingType.CL100K_BASE);
+    }
+
+    @Override
+    public List<Chunk> split(InputDocument inputDocument) {
+        List<Integer> tokens = this.encoding.encode(inputDocument.getText());
+        List<Chunk> chunks = new ArrayList<>();
+
+        int numChunks =  (tokens.size() / maxTokens) + (tokens.size() % maxTokens == 0 ? 0 : 1);
+
+        while (!tokens.isEmpty()) {
+            int chunkSize = Math.min(tokens.size(), this.maxTokens);
+            List<Integer> chunkTokens = tokens.subList(0, chunkSize);
+            tokens = tokens.subList(chunkSize, tokens.size());
+            String chunkText = this.encoding.decode(chunkTokens);
+            Chunk chunk = Chunk.builder()
+                    .documentId(inputDocument.getDocumentId())
+                    .chunkId(chunks.size())
+                    .totalChunks(numChunks)
+                    .text(chunkText)
+                    .properties(inputDocument.getProperties())
+                    .build();
+            chunks.add(chunk);
+        }
+        return chunks;
+    }
+}
