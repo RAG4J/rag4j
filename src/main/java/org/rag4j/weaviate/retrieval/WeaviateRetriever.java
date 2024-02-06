@@ -18,6 +18,7 @@ import org.rag4j.retrieval.Retriever;
 import org.rag4j.weaviate.WeaviateAccess;
 import org.rag4j.weaviate.WeaviateException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.rag4j.weaviate.WeaviateContants.CLASS_NAME;
@@ -30,16 +31,23 @@ public class WeaviateRetriever implements Retriever {
     private final WeaviateAccess weaviateAccess;
     private final Embedder embedder;
     private final Boolean useHybrid;
+    private final List<String> fieldsToRetrieve;
 
     public WeaviateRetriever(WeaviateAccess weaviateAccess, Embedder embedder) {
-        this(weaviateAccess, embedder, false);
+        this(weaviateAccess, embedder, false, List.of());
     }
 
     public WeaviateRetriever(WeaviateAccess weaviateAccess, Embedder embedder, Boolean useHybrid) {
+        this(weaviateAccess, embedder, useHybrid, List.of());
+    }
+
+    public WeaviateRetriever(WeaviateAccess weaviateAccess, Embedder embedder, Boolean useHybrid, List<String> fieldsToRetrieve) {
         this.weaviateAccess = weaviateAccess;
         this.embedder = embedder;
         this.useHybrid = useHybrid;
+        this.fieldsToRetrieve = fieldsToRetrieve;
     }
+
 
     @Override
     public List<RelevantChunk> findRelevantChunks(String question, int maxResults) {
@@ -54,16 +62,8 @@ public class WeaviateRetriever implements Retriever {
 
         Get get = weaviateAccess.getClient().graphQL().get()
                 .withClassName(CLASS_NAME)
-                .withFields(
-                        Field.builder().name("text").build(),
-                        Field.builder().name("documentId").build(),
-                        Field.builder().name("chunkId").build(),
-                        Field.builder().name("totalChunks").build(),
-                        Field.builder().name("_additional").fields(
-                                Field.builder().name("distance").build(),
-                                Field.builder().name("score").build()
-                        ).build()
-                ).withLimit(maxResults);
+                .withFields(buildFields(true))
+                .withLimit(maxResults);
         if (useHybrid) {
             get.withHybrid(HybridArgument.builder()
                     .query(question)
@@ -93,12 +93,7 @@ public class WeaviateRetriever implements Retriever {
 
         Result<GraphQLResponse> result = weaviateAccess.getClient().graphQL().get()
                 .withClassName(CLASS_NAME)
-                .withFields(
-                        Field.builder().name("text").build(),
-                        Field.builder().name("documentId").build(),
-                        Field.builder().name("chunkId").build(),
-                        Field.builder().name("totalChunks").build()
-                )
+                .withFields(buildFields(false))
                 .withWhere(WhereArgument.builder()
                         .filter(WhereFilter.builder()
                                 .operator(Operator.And)
@@ -135,12 +130,7 @@ public class WeaviateRetriever implements Retriever {
         while (!done) {
             Result<GraphQLResponse> result = weaviateAccess.getClient().graphQL().get()
                     .withClassName(CLASS_NAME)
-                    .withFields(
-                            Field.builder().name("text").build(),
-                            Field.builder().name("documentId").build(),
-                            Field.builder().name("chunkId").build(),
-                            Field.builder().name("totalChunks").build()
-                    )
+                    .withFields(buildFields(false))
                     .withLimit(limit)
                     .withOffset(offset)
                     .run();
@@ -161,6 +151,26 @@ public class WeaviateRetriever implements Retriever {
                 offset += limit;
             }
         }
+    }
+
+    private Field[] buildFields(boolean withAdditionalFields) {
+        List<Field> fields = new ArrayList<>(List.of(
+                Field.builder().name("text").build(),
+                Field.builder().name("documentId").build(),
+                Field.builder().name("chunkId").build(),
+                Field.builder().name("totalChunks").build()));
+        if (withAdditionalFields) {
+            fields.add(Field.builder().name("_additional").fields(
+                    Field.builder().name("distance").build(),
+                    Field.builder().name("score").build()
+            ).build());
+        }
+        fields.addAll(fieldsToRetrieve.stream()
+                .map(fieldName -> Field.builder().name(fieldName).build())
+                .toList()
+        );
+
+        return fields.toArray(new Field[0]);
     }
 
     private Chunk parseGraphQLResponse(GraphQLResponse response) {

@@ -2,7 +2,6 @@ package org.rag4j.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import org.rag4j.domain.Chunk;
 
 import java.util.Map;
 

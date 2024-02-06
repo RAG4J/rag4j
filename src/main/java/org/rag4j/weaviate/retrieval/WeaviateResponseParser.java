@@ -5,7 +5,6 @@ import org.rag4j.domain.Chunk;
 import org.rag4j.domain.RelevantChunk;
 import org.rag4j.weaviate.WeaviateException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +51,13 @@ public class WeaviateResponseParser {
                 unusedProperties.put(key, entry.getValue());
             }
         }
-        return new Chunk(documentId, chunkId, totalChunks, text, unusedProperties);
+        return Chunk.builder()
+                .documentId(documentId)
+                .chunkId(chunkId)
+                .totalChunks(totalChunks)
+                .text(text)
+                .properties(unusedProperties)
+                .build();
     }
 
 

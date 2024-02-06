@@ -16,11 +16,9 @@ public class AppRetrieverWeaviate {
         KeyLoader keyLoader = new KeyLoader();
         WeaviateAccess weaviateAccess = new WeaviateAccess(keyLoader);
         Embedder embedder = new OpenAIEmbedder(keyLoader);
-        Retriever retriever = new WeaviateRetriever(weaviateAccess, embedder, false);
+        Retriever retriever = new WeaviateRetriever(weaviateAccess, embedder, true, List.of("title", "timerange"));
 
-//        retriever.loopOverChunks(chunk -> {
-//            System.out.printf("Document: %s - %d%n", chunk.getDocumentId(), chunk.getChunkId());
-//        });
+        retriever.loopOverChunks(chunk -> System.out.printf("Document: %s - %d%n", chunk.getDocumentId(), chunk.getChunkId()));
 
         System.out.println("-----------------");
 
@@ -32,6 +30,7 @@ public class AppRetrieverWeaviate {
 
         for (RelevantChunk relevantChunk : relevantChunks) {
             System.out.printf("Document: %s - %d%n", relevantChunk.getDocumentId(), relevantChunk.getChunkId());
+            System.out.printf("Title: %s%n", relevantChunk.getProperties().get("title"));
             System.out.println(relevantChunk.getText());
             System.out.println("-----------------");
         }

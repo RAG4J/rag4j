@@ -5,7 +5,6 @@ import org.rag4j.indexing.OpenNLPSentenceSplitter;
 import org.rag4j.openai.OpenAIEmbedder;
 import org.rag4j.util.KeyLoader;
 import org.rag4j.weaviate.WeaviateAccess;
-import org.rag4j.weaviate.indexer.WeaviateChunkClassBuilder;
 import org.rag4j.weaviate.indexer.WeaviateChunkIndexer;
 import org.rag4j.weaviate.indexer.WeaviateContentStore;
 
@@ -18,6 +17,7 @@ import static org.rag4j.weaviate.WeaviateContants.CLASS_NAME;
 public class AppIndexerWeaviate {
 
     private static void createWeaviateSchema(WeaviateAccess weaviateAccess) {
+        VasaWeaviateChunkClassBuilder WeaviateChunkClassBuilder = new VasaWeaviateChunkClassBuilder();
         weaviateAccess.forceCreateClass(WeaviateChunkClassBuilder.build());
         String schema = weaviateAccess.getSchemaForClass(CLASS_NAME);
         System.out.println(schema);

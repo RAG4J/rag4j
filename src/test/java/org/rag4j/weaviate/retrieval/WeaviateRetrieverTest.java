@@ -1,7 +1,6 @@
-package org.rag4j.retrieval;
+package org.rag4j.weaviate.retrieval;
 
 import io.weaviate.client.WeaviateClient;
-import io.weaviate.client.base.Response;
 import io.weaviate.client.base.Result;
 import io.weaviate.client.v1.graphql.GraphQL;
 import io.weaviate.client.v1.graphql.model.GraphQLResponse;
@@ -9,24 +8,18 @@ import io.weaviate.client.v1.graphql.query.Get;
 import io.weaviate.client.v1.graphql.query.fields.Field;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.rag4j.domain.Chunk;
 import org.rag4j.domain.RelevantChunk;
 import org.rag4j.indexing.Embedder;
-import org.rag4j.util.KeyLoader;
 import org.rag4j.weaviate.WeaviateAccess;
-import org.rag4j.weaviate.WeaviateException;
-import org.rag4j.weaviate.retrieval.WeaviateResponseParser;
-import org.rag4j.weaviate.retrieval.WeaviateRetriever;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
@@ -38,9 +31,6 @@ public class WeaviateRetrieverTest {
 
     @Mock
     private WeaviateClient weaviateClient;
-
-    @Mock
-    private KeyLoader keyLoader;
 
     @Mock
     private Embedder embedder;
@@ -68,8 +58,20 @@ public class WeaviateRetrieverTest {
         List<Double> vector = Arrays.asList(1.0, 2.0, 3.0);
         int maxResults = 5;
 
-        Chunk chunk1 = new Chunk("doc1", 0, 3, "an answer", Map.of());
-        Chunk chunk2 = new Chunk("doc1", 2, 3, "with a question", Map.of());
+        Chunk chunk1 = Chunk.builder()
+                .documentId("doc1")
+                .chunkId(0)
+                .totalChunks(3)
+                .text("an answer")
+                .properties(Map.of())
+                .build();
+        Chunk chunk2 = Chunk.builder()
+                .documentId("doc1")
+                .chunkId(2)
+                .totalChunks(3)
+                .text("with a question")
+                .properties(Map.of())
+                .build();
 
         RelevantChunk relevantChunk1 = new RelevantChunk(chunk1, 0.5d);
         RelevantChunk relevantChunk2 = new RelevantChunk(chunk2, 0.45d);

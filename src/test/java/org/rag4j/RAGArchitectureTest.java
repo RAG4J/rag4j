@@ -22,7 +22,7 @@ public class RAGArchitectureTest {
     @ArchTest
     public static final ArchRule indexingPackageRule = classes()
             .that().resideInAPackage("org.rag4j.indexing..")
-            .should().onlyDependOnClassesThat().resideInAnyPackage("org.rag4j.indexing..", "org.rag4j.util..", "org.rag4j.domain..", "org.rag4j.resources..", "opennlp..","java..", "org.slf4j..", "lombok..", "org.mockito..", "org.junit..");
+            .should().onlyDependOnClassesThat().resideInAnyPackage("org.rag4j.indexing..", "org.rag4j.util..", "org.rag4j.domain..", "org.rag4j.resources..", "opennlp..","java..", "org.slf4j..", "lombok..", "org.mockito..", "org.junit..", "com.knuddels.jtokkit..");
 
     @ArchTest
     public static final ArchRule layerRules = layeredArchitecture().consideringOnlyDependenciesInLayers()
