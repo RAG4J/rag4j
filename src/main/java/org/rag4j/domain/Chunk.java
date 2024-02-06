@@ -1,8 +1,6 @@
 package org.rag4j.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.Map;
 
@@ -11,9 +9,10 @@ import java.util.Map;
  * document is split into multiple chunks. Each chunk has a unique id as a sequence number and the total number of
  * chunks in the document is also provided.
  */
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Builder
+@EqualsAndHashCode
 public class Chunk {
     private String documentId;
     private int chunkId;

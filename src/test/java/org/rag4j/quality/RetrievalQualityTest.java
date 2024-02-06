@@ -1,6 +1,5 @@
 package org.rag4j.quality;
 
-import com.azure.ai.openai.OpenAIClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -18,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("unchecked")
 public class RetrievalQualityTest {
 
     @Mock
@@ -39,7 +39,13 @@ public class RetrievalQualityTest {
         List<QuestionAnswerRecord> questionAnswerRecords = new ArrayList<>();
         questionAnswerRecords.add(new QuestionAnswerRecord("doc1", 1, "text", "question"));
 
-        RelevantChunk relevantChunk = new RelevantChunk(new Chunk("doc1", 1, 3,"text", Map.of()), 1.0);
+        RelevantChunk relevantChunk = new RelevantChunk(Chunk.builder()
+                .documentId("doc1")
+                .chunkId(1)
+                .totalChunks(3)
+                .text("text")
+                .properties(Map.of())
+                .build(), 1.0);
         when(retriever.findRelevantChunks(anyString(), any(List.class), anyInt())).thenReturn(List.of(relevantChunk));
 
         RetrievalQuality retrievalQuality = retrievalQualityService.obtainRetrievalQuality(questionAnswerRecords, embedder);

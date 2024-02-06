@@ -32,20 +32,20 @@ public class WindowRetrievalStrategyTest {
                 new RelevantChunk("doc2", 11, 17, 0.55, "just an answer", Map.of())));
 
         when(retriever.getChunk(anyString(), anyInt())).thenReturn(
-                new Chunk("doc1", 0, 11, "chunk 0", Map.of()),
-                new Chunk("doc1", 1, 11, "just an answer", Map.of()),
-                new Chunk("doc1", 2, 11, "chunk 2", Map.of()),
-                new Chunk("doc1", 3, 11, "chunk 3", Map.of()),
-                new Chunk("doc1", 4, 11, "chunk 4", Map.of()),
-                new Chunk("doc1", 5, 11, "chunk 5", Map.of()),
-                new Chunk("doc1", 6, 11, "just an answer", Map.of()),
-                new Chunk("doc1", 7, 11, "chunk 7", Map.of()),
-                new Chunk("doc1", 8, 11, "chunk 8", Map.of()),
-                new Chunk("doc2", 9, 17, "chunk 9", Map.of()),
-                new Chunk("doc2", 10, 17, "chunk 10", Map.of()),
-                new Chunk("doc2", 11, 17, "just an answer", Map.of()),
-                new Chunk("doc2", 12, 17, "chunk 12", Map.of()),
-                new Chunk("doc2", 13, 17, "chunk 13", Map.of())
+                newChunk("doc1", 0, 11, "chunk 0", Map.of()),
+                newChunk("doc1", 1, 11, "just an answer", Map.of()),
+                newChunk("doc1", 2, 11, "chunk 2", Map.of()),
+                newChunk("doc1", 3, 11, "chunk 3", Map.of()),
+                newChunk("doc1", 4, 11, "chunk 4", Map.of()),
+                newChunk("doc1", 5, 11, "chunk 5", Map.of()),
+                newChunk("doc1", 6, 11, "just an answer", Map.of()),
+                newChunk("doc1", 7, 11, "chunk 7", Map.of()),
+                newChunk("doc1", 8, 11, "chunk 8", Map.of()),
+                newChunk("doc2", 9, 17, "chunk 9", Map.of()),
+                newChunk("doc2", 10, 17, "chunk 10", Map.of()),
+                newChunk("doc2", 11, 17, "just an answer", Map.of()),
+                newChunk("doc2", 12, 17, "chunk 12", Map.of()),
+                newChunk("doc2", 13, 17, "chunk 13", Map.of())
 
         );
 
@@ -78,6 +78,16 @@ public class WindowRetrievalStrategyTest {
 
     }
 
+    private Chunk newChunk(String docId, int chunkId, int totalChunks, String text, Map<String, Object> properties) {
+        return Chunk.builder()
+                .documentId(docId)
+                .chunkId(chunkId)
+                .totalChunks(totalChunks)
+                .text(text)
+                .properties(properties)
+                .build();
+    }
+
     @Test
     public void testRetrieveBasicFlowObserver() {
         WindowRetrievalStrategy strategy = new WindowRetrievalStrategy(retriever, 1);
@@ -88,12 +98,12 @@ public class WindowRetrievalStrategyTest {
         );
 
         when(retriever.getChunk(anyString(), anyInt())).thenReturn(
-                new Chunk("doc1", 0, 11, "chunk 0", Map.of()),
-                new Chunk("doc1", 1, 11, "just an answer", Map.of()),
-                new Chunk("doc1", 2, 11, "chunk 2", Map.of()),
-                new Chunk("doc2", 5, 9, "chunk 5", Map.of()),
-                new Chunk("doc2", 6, 9, "another one", Map.of()),
-                new Chunk("doc2", 7, 9, "chunk 7", Map.of())
+                newChunk("doc1", 0, 11, "chunk 0", Map.of()),
+                newChunk("doc1", 1, 11, "just an answer", Map.of()),
+                newChunk("doc1", 2, 11, "chunk 2", Map.of()),
+                newChunk("doc2", 5, 9, "chunk 5", Map.of()),
+                newChunk("doc2", 6, 9, "another one", Map.of()),
+                newChunk("doc2", 7, 9, "chunk 7", Map.of())
         );
 
         RetrievalOutput retrievalOutput = strategy.retrieve("just a question", 2, true);
