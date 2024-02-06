@@ -4,12 +4,16 @@ import io.weaviate.client.v1.misc.model.BM25Config;
 import io.weaviate.client.v1.misc.model.InvertedIndexConfig;
 import io.weaviate.client.v1.schema.model.Property;
 import io.weaviate.client.v1.schema.model.WeaviateClass;
+import org.rag4j.openai.OpenAIConstants;
 import org.rag4j.weaviate.schema.Text2VecOpenAIModuleConfig;
 import org.rag4j.weaviate.schema.Text2VecOpenAIPropertyModuleConfig;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static org.rag4j.weaviate.WeaviateContants.CLASS_NAME;
 
 public class WeaviateChunkClassBuilder {
@@ -17,68 +21,26 @@ public class WeaviateChunkClassBuilder {
 
     /**
      * Build a WeaviateClass object for the Chunk class.
-     *
      * <a href="https://weaviate.io/developers/weaviate/config-refs/schema">...</a>
      * <a href="https://weaviate.io/developers/weaviate/config-refs/datatypes">...</a>
      * <a href="https://weaviate.io/developers/weaviate/modules/retriever-vectorizer-modules/text2vec-openai">...</a>
      *
      * @return a WeaviateClass object for the Chunk class
      */
-    public static WeaviateClass build() {
-        List<Property> properties = List.of(
-                Property.builder()
-                        .name("documentId")
-                        .dataType(List.of("text"))
-                        .description("The id of the document this chunk belongs to")
-                        .moduleConfig(Map.of(
-                                "text2vec-openai", Text2VecOpenAIPropertyModuleConfig.builder()
-                                        .skip(Boolean.TRUE)
-                                        .vectorizePropertyName(Boolean.FALSE)
-                                        .build()
-                        ))
-                        .build(),
-                Property.builder()
-                        .name("chunkId")
-                        .dataType(List.of("int"))
-                        .description("The id of this chunk")
-                        .moduleConfig(Map.of(
-                                "text2vec-openai", Text2VecOpenAIPropertyModuleConfig.builder()
-                                        .skip(Boolean.TRUE)
-                                        .vectorizePropertyName(Boolean.FALSE)
-                                        .build()
-                        ))
-                        .build(),
-                Property.builder()
-                        .name("totalChunks")
-                        .dataType(List.of("int"))
-                        .description("The total number of chunks in the document")
-                        .moduleConfig(Map.of(
-                                "text2vec-openai", Text2VecOpenAIPropertyModuleConfig.builder()
-                                        .skip(Boolean.TRUE)
-                                        .vectorizePropertyName(Boolean.FALSE)
-                                        .build()
-                        ))
-                        .build(),
-                Property.builder()
-                        .name("text")
-                        .dataType(List.of("text"))
-                        .description("The text of this chunk")
-                        .moduleConfig(Map.of(
-                                "text2vec-openai", Text2VecOpenAIPropertyModuleConfig.builder()
-                                        .skip(Boolean.FALSE)
-                                        .vectorizePropertyName(Boolean.FALSE)
-                                        .build()
-                        ))
-                        .build()
-        );
+    public WeaviateClass build() {
+        List<Property> properties = defaultProperties();
+
+        List<Property> combined = Stream.concat(properties.stream(), additionalProperties().stream())
+                .toList();
+
         return WeaviateClass.builder()
                 .className(CLASS_NAME)
                 .description("A chunk of text to be indexed by Weaviate")
                 .vectorizer("text2vec-openai")
                 .moduleConfig(Map.of(
                         "text2vec-openai", Text2VecOpenAIModuleConfig.builder()
-                                .model("ada")
-                                .modelVersion("002")
+                                .model(OpenAIConstants.DEFAULT_EMBEDDING)
+                                .modelVersion(null) // since the new embedding, there is no version
                                 .type("text")
                                 .build()
                 ))
@@ -89,8 +51,49 @@ public class WeaviateChunkClassBuilder {
                                 .build())
                         .build())
                 .vectorIndexType("hnsw")
-                .properties(properties)
+                .properties(combined)
                 .build();
+    }
 
+    private List<Property> defaultProperties() {
+        return List.of(
+                Property.builder()
+                        .name("documentId")
+                        .dataType(List.of("text"))
+                        .description("The id of the document this chunk belongs to")
+                        .moduleConfig(buildModuleConfig(TRUE))
+                        .build(),
+                Property.builder()
+                        .name("chunkId")
+                        .dataType(List.of("int"))
+                        .description("The id of this chunk")
+                        .moduleConfig(buildModuleConfig(TRUE))
+                        .build(),
+                Property.builder()
+                        .name("totalChunks")
+                        .dataType(List.of("int"))
+                        .description("The total number of chunks in the document")
+                        .moduleConfig(buildModuleConfig(TRUE))
+                        .build(),
+                Property.builder()
+                        .name("text")
+                        .dataType(List.of("text"))
+                        .description("The text of this chunk")
+                        .moduleConfig(buildModuleConfig(FALSE))
+                        .build()
+        );
+    }
+
+    protected List<Property> additionalProperties() {
+        return List.of();
+    }
+
+    protected Map<String, Text2VecOpenAIPropertyModuleConfig> buildModuleConfig(Boolean skip) {
+
+        return Map.of("text2vec-openai", Text2VecOpenAIPropertyModuleConfig.builder()
+                .skip(skip)
+                .vectorizePropertyName(FALSE)
+                .build()
+        );
     }
 }

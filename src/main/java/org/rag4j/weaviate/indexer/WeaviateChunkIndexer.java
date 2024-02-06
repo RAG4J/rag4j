@@ -28,6 +28,10 @@ public class WeaviateChunkIndexer {
                 .map(Double::floatValue)
                 .toArray(Float[]::new);
 
+        if (!chunk.getProperties().isEmpty()) {
+            properties.putAll(chunk.getProperties());
+        }
+
         String documentId = UUID.randomUUID().toString();
 
         weaviateAccess.addDocument(CLASS_NAME, documentId, properties, floatVector);

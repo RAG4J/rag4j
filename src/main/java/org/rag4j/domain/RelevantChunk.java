@@ -1,7 +1,7 @@
 package org.rag4j.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import org.rag4j.domain.Chunk;
 
 import java.util.Map;
 
@@ -9,6 +9,7 @@ import java.util.Map;
  * Value object of type {@link Chunk} with an additional score meant to indicate the relevance to a question.
  */
 @Getter
+@EqualsAndHashCode(callSuper = true)
 public class RelevantChunk extends Chunk {
     private final double score;
 
