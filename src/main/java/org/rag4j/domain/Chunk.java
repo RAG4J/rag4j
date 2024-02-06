@@ -2,6 +2,7 @@ package org.rag4j.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.util.Map;
@@ -14,6 +15,7 @@ import java.util.Map;
 @AllArgsConstructor
 @Getter
 @Builder
+@EqualsAndHashCode
 public class Chunk {
     private String documentId;
     private int chunkId;

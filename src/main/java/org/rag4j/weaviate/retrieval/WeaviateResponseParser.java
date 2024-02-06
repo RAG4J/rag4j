@@ -31,6 +31,9 @@ public class WeaviateResponseParser {
 
             Map<String,Object> additional = parseAdditional(chunk);
             Double score = (Double) additional.get("distance");
+            if (null == score) {
+                score = Double.parseDouble((String) additional.get("score"));
+            }
 
             return new RelevantChunk(extractedChunk, score);
         }).toList();
@@ -96,8 +99,10 @@ public class WeaviateResponseParser {
         Object additional = _additional.get("_additional");
         if (additional instanceof Map<?,?>) {
             return (Map<String,Object>) additional;
-        } else {
+        } else if (null != additional) {
             throw new WeaviateException("Expected additional to be a Map<String,Object> but was " + additional.getClass());
+        } else {
+            throw new WeaviateException("Expected additional to be a Map<String,Object> but was null");
         }
     }
 }

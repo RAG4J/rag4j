@@ -4,6 +4,9 @@ import io.weaviate.client.base.Result;
 import io.weaviate.client.v1.filters.Operator;
 import io.weaviate.client.v1.filters.WhereFilter;
 import io.weaviate.client.v1.graphql.model.GraphQLResponse;
+import io.weaviate.client.v1.graphql.query.Get;
+import io.weaviate.client.v1.graphql.query.argument.FusionType;
+import io.weaviate.client.v1.graphql.query.argument.HybridArgument;
 import io.weaviate.client.v1.graphql.query.argument.NearVectorArgument;
 import io.weaviate.client.v1.graphql.query.argument.WhereArgument;
 import io.weaviate.client.v1.graphql.query.fields.Field;
@@ -26,10 +29,16 @@ public class WeaviateRetriever implements Retriever {
 
     private final WeaviateAccess weaviateAccess;
     private final Embedder embedder;
+    private final Boolean useHybrid;
 
     public WeaviateRetriever(WeaviateAccess weaviateAccess, Embedder embedder) {
+        this(weaviateAccess, embedder, false);
+    }
+
+    public WeaviateRetriever(WeaviateAccess weaviateAccess, Embedder embedder, Boolean useHybrid) {
         this.weaviateAccess = weaviateAccess;
         this.embedder = embedder;
+        this.useHybrid = useHybrid;
     }
 
     @Override
@@ -43,7 +52,7 @@ public class WeaviateRetriever implements Retriever {
                 .map(Double::floatValue)
                 .toArray(Float[]::new);
 
-        Result<GraphQLResponse> result = weaviateAccess.getClient().graphQL().get()
+        Get get = weaviateAccess.getClient().graphQL().get()
                 .withClassName(CLASS_NAME)
                 .withFields(
                         Field.builder().name("text").build(),
@@ -51,14 +60,25 @@ public class WeaviateRetriever implements Retriever {
                         Field.builder().name("chunkId").build(),
                         Field.builder().name("totalChunks").build(),
                         Field.builder().name("_additional").fields(
-                                Field.builder().name("distance").build()
+                                Field.builder().name("distance").build(),
+                                Field.builder().name("score").build()
                         ).build()
-                )
-                .withNearVector(NearVectorArgument.builder()
-                        .vector(floatVector)
-                        .build())
-                .withLimit(maxResults)
-                .run();
+                ).withLimit(maxResults);
+        if (useHybrid) {
+            get.withHybrid(HybridArgument.builder()
+                    .query(question)
+                    .vector(floatVector)
+                    .alpha(0.5f)
+                    .fusionType(FusionType.RANKED)
+                    .build());
+        } else {
+            get.withNearVector(NearVectorArgument.builder()
+                    .vector(floatVector)
+                    .build());
+        }
+
+        Result<GraphQLResponse> result = get.run();
+
         if (result.getError() != null) {
             LOGGER.error("Error: {}", result.getError().getMessages());
             throw new WeaviateException("Error: " + result.getError().getMessages());
