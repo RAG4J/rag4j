@@ -15,6 +15,36 @@ public class RAGArchitectureTest {
             .that().resideInAPackage("..weaviate..")
             .should().onlyBeAccessed().byAnyPackage("org.rag4j.examples", "org.rag4j.weaviate..");
     @ArchTest
+    public static final ArchRule layerRules = layeredArchitecture().consideringOnlyDependenciesInLayers()
+            .layer("Chat").definedBy("org.rag4j.chat..")
+            .layer("Domain").definedBy("org.rag4j.domain..")
+            .layer("Generation").definedBy("org.rag4j.generation..")
+            .layer("Indexing").definedBy("org.rag4j.indexing..")
+            .layer("Localembedder").definedBy("org.rag4j.localembedder..")
+            .layer("Main").definedBy("org.rag4j")
+            .layer("OpenAI").definedBy("org.rag4j.openai..")
+            .layer("Quality").definedBy("org.rag4j.quality..")
+            .layer("Resources").definedBy("org.rag4j.resources..")
+            .layer("Retrieval").definedBy("org.rag4j.retrieval..")
+            .layer("Store").definedBy("org.rag4j.store..")
+            .layer("Tracker").definedBy("org.rag4j.tracker..")
+            .layer("Util").definedBy("org.rag4j.store..")
+            .layer("Weaviate").definedBy("org.rag4j.weaviate..")
+            .whereLayer("Chat").mayOnlyBeAccessedByLayers("Main", "OpenAI", "Quality")
+            .whereLayer("Domain").mayOnlyBeAccessedByLayers("Main","Indexing", "Retrieval", "Weaviate", "Tracker", "Generation", "Store", "Quality")
+            .whereLayer("Generation").mayOnlyBeAccessedByLayers("Main", "OpenAI", "Quality")
+            .whereLayer("Indexing").mayOnlyBeAccessedByLayers("Main", "Weaviate", "OpenAI", "Localembedder", "Store", "Quality")
+            .whereLayer("Localembedder").mayOnlyBeAccessedByLayers("Main")
+            .whereLayer("OpenAI").mayOnlyBeAccessedByLayers("Main", "Generation", "Indexing", "Retrieval")
+            .whereLayer("Quality").mayOnlyBeAccessedByLayers("Main")
+            .whereLayer("Resources").mayOnlyBeAccessedByLayers("Main","Indexing")
+            .whereLayer("Retrieval").mayOnlyBeAccessedByLayers("Main","Weaviate", "Store", "Quality")
+            .whereLayer("Store").mayOnlyBeAccessedByLayers("Main")
+            .whereLayer("Tracker").mayOnlyBeAccessedByLayers("Main", "Generation", "Retrieval", "Quality")
+            .whereLayer("Util").mayOnlyBeAccessedByLayers("Main","Indexing", "Retrieval", "Weaviate", "Tracker", "Generation", "OpenAI")
+            .whereLayer("Weaviate").mayOnlyBeAccessedByLayers("Main");
+
+    @ArchTest
     public static final ArchRule utilPackageRule = classes()
             .that().resideInAPackage("org.rag4j.util..")
             .should().onlyDependOnClassesThat().resideInAnyPackage("org.rag4j.util..", "java..", "org.slf4j..", "javax.crypto..", "lombok..", "org.mockito..", "org.junit..");
@@ -24,24 +54,4 @@ public class RAGArchitectureTest {
             .that().resideInAPackage("org.rag4j.indexing..")
             .should().onlyDependOnClassesThat().resideInAnyPackage("org.rag4j.indexing..", "org.rag4j.util..", "org.rag4j.domain..", "org.rag4j.resources..", "opennlp..","java..", "org.slf4j..", "lombok..", "org.mockito..", "org.junit..", "com.knuddels.jtokkit..");
 
-    @ArchTest
-    public static final ArchRule layerRules = layeredArchitecture().consideringOnlyDependenciesInLayers()
-            .layer("Main").definedBy("org.rag4j")
-            .layer("Util").definedBy("org.rag4j.util..")
-            .layer("Domain").definedBy("org.rag4j.domain..")
-            .layer("Resources").definedBy("org.rag4j.resources..")
-            .layer("Indexing").definedBy("org.rag4j.indexing..")
-            .layer("Retrieval").definedBy("org.rag4j.retrieval..")
-            .layer("Weaviate").definedBy("org.rag4j.weaviate..")
-            .layer("OpenAI").definedBy("org.rag4j.openai..")
-            .layer("Tracker").definedBy("org.rag4j.tracker..")
-            .layer("Generation").definedBy("org.rag4j.generation..")
-            .whereLayer("Util").mayOnlyBeAccessedByLayers("Main","Indexing", "Retrieval", "Weaviate", "Tracker", "Generation", "OpenAI")
-            .whereLayer("Domain").mayOnlyBeAccessedByLayers("Main","Indexing", "Retrieval", "Weaviate", "Tracker", "Generation")
-            .whereLayer("Resources").mayOnlyBeAccessedByLayers("Main","Indexing")
-            .whereLayer("Indexing").mayOnlyBeAccessedByLayers("Main", "Weaviate", "OpenAI")
-            .whereLayer("Retrieval").mayOnlyBeAccessedByLayers("Main","Weaviate")
-            .whereLayer("Weaviate").mayOnlyBeAccessedByLayers("Main")
-            .whereLayer("OpenAI").mayOnlyBeAccessedByLayers("Main", "Generation", "Indexing", "Retrieval")
-            .whereLayer("Tracker").mayOnlyBeAccessedByLayers("Main", "Generation", "Retrieval");
 }
