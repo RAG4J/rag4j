@@ -5,6 +5,7 @@ import com.azure.ai.openai.models.*;
 import org.rag4j.openai.OpenAIConstants;
 import org.rag4j.tracker.RAGObserver;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,19 +42,13 @@ public class AnswerQualityService {
         String answer = ragObserver.getAnswer();
         String question = ragObserver.getQuestion();
 
-        List<ChatRequestMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatRequestSystemMessage(
-                "You are a quality assistant verifying retrieval augmented generation systems. Your task is to " +
-                        "verify a generated answer against the proposed question. Give the answer a score between 1 and " +
-                        "5 and keep the number as an integer. 5 means the answer contains the answer to the proposed " +
-                        "question completely. 1 means there is not match between the answer and the question at all. " +
-                        "The question provided after 'question:'. The answer after 'answer:'. Write your answers in " +
-                        "the format of score - reason. Keep the reason short as in maximum 2 sentences. " +
-                        "An example: 3 - The answer is correct but some details are missing."));
-        String contextMessage = String.format("Question: %s%nAnswer: %s%nResult:", question, answer);
-        chatMessages.add(new ChatRequestUserMessage(contextMessage));
+        OpenAIPrompt openAIPrompt = new OpenAIPrompt(
+                Path.of("/quality/quality_of_answer_to_question_system.txt"),
+                Path.of("/quality/quality_of_answer_to_question_user.txt")
+        );
+        ChatCompletionsOptions options = openAIPrompt.constructPrompt(List.of(), List.of(question, answer));
 
-        ChatCompletions chatCompletions = client.getChatCompletions(OpenAIConstants.GPT4, new ChatCompletionsOptions(chatMessages));
+        ChatCompletions chatCompletions = client.getChatCompletions(OpenAIConstants.GPT4, options);
         String content = chatCompletions.getChoices().getFirst().getMessage().getContent();
 
         return splitString(content, AnswerToQuestionQuality.class);
@@ -63,20 +58,13 @@ public class AnswerQualityService {
         String answer = ragObserver.getAnswer();
         String context = ragObserver.getContext();
 
-        List<ChatRequestMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatRequestSystemMessage(
-                "You are a quality assistant verifying retrieval augmented generation systems. Your task is to " +
-                        "verify a generated answer against the provided context. Give the answer a score between 1 and " +
-                        "5 and keep the number as an integer. 5 means the answer contains only facts from the context. " +
-                        "1 means there is not match between the answer and the provided context at all. If the answer " +
-                        "contains exact phrases from the context, the score should be lower as well." +
-                        "The answer provided after 'answer:'. The context after 'context:'. Write your answers in " +
-                        "the format of score - reason. Keep the reason short as in maximum 2 sentences. " +
-                        "An example: 3 - The answer is correct but some details are missing."));
-        String contextMessage = String.format("Answer: %s%nContext: %s%nResult:", answer, context);
-        chatMessages.add(new ChatRequestUserMessage(contextMessage));
+        OpenAIPrompt openAIPrompt = new OpenAIPrompt(
+                Path.of("/quality/quality_of_answer_from_context_system.txt"),
+                Path.of("/quality/quality_of_answer_from_context_user.txt")
+        );
+        ChatCompletionsOptions options = openAIPrompt.constructPrompt(List.of(), List.of(answer, context));
 
-        ChatCompletions chatCompletions = client.getChatCompletions(OpenAIConstants.GPT4, new ChatCompletionsOptions(chatMessages));
+        ChatCompletions chatCompletions = client.getChatCompletions(OpenAIConstants.GPT4, options);
         String content = chatCompletions.getChoices().getFirst().getMessage().getContent();
 
         return splitString(content, AnswerFromContextQuality.class);

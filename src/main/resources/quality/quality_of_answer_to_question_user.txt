@@ -1,0 +1,1 @@
+Question: %s%nAnswer: %s%nResult:%n
