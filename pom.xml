@@ -50,7 +50,6 @@
             <artifactId>client</artifactId>
             <version>${weaviate.version}</version>
             <exclusions>
-                <!-- TODO check what happens if we exclude this there was a security risk -->
                 <exclusion>
                     <groupId>commons-codec</groupId>
                     <artifactId>commons-codec</artifactId>
