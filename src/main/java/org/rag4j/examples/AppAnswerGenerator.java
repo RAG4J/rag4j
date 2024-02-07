@@ -1,9 +1,11 @@
 package org.rag4j.examples;
 
 import com.azure.ai.openai.OpenAIClient;
+import org.rag4j.chat.ChatService;
 import org.rag4j.generation.AnswerGenerator;
 import org.rag4j.generation.ObservedAnswerGenerator;
 import org.rag4j.openai.OpenAIAnswerGenerator;
+import org.rag4j.openai.OpenAIChatService;
 import org.rag4j.openai.OpenAIConstants;
 import org.rag4j.openai.OpenAIFactory;
 import org.rag4j.quality.AnswerQuality;
@@ -38,7 +40,8 @@ public class AppAnswerGenerator {
         RAGTracker.cleanup();
 
         OpenAIClient openAIClient = OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey());
-        AnswerQualityService answerQualityService = new AnswerQualityService(openAIClient);
+        ChatService chatService = new OpenAIChatService(openAIClient);
+        AnswerQualityService answerQualityService = new AnswerQualityService(chatService);
         AnswerQuality answerQuality = answerQualityService.determineQualityOfAnswer(ragObserver);
 
         System.out.printf("The quality of the answer in relation to the question is: %s%n", answerQuality.getAnswerToQuestionQuality().getQuality());

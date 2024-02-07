@@ -1,13 +1,11 @@
 package org.rag4j.examples;
 
+import org.rag4j.chat.ChatService;
 import org.rag4j.domain.RetrievalOutput;
 import org.rag4j.generation.AnswerGenerator;
 import org.rag4j.generation.ObservedAnswerGenerator;
 import org.rag4j.indexing.Embedder;
-import org.rag4j.openai.OpenAIAnswerGenerator;
-import org.rag4j.openai.OpenAIConstants;
-import org.rag4j.openai.OpenAIEmbedder;
-import org.rag4j.openai.OpenAIFactory;
+import org.rag4j.openai.*;
 import org.rag4j.quality.AnswerQualityService;
 import org.rag4j.quality.AnswerQuality;
 import org.rag4j.retrieval.ObservedRetriever;
@@ -57,7 +55,8 @@ public class AppQualityLLM {
             RAGObserverPersistor persistor = new LoggingRAGObserverPersistor();
             persistor.persist(observer);
 
-            AnswerQualityService answerQuality = new AnswerQualityService(OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey()));
+            ChatService chatService = new OpenAIChatService(OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey()));
+            AnswerQualityService answerQuality = new AnswerQualityService(chatService);
             AnswerQuality quality = answerQuality.determineQualityOfAnswer(observer);
             System.out.printf("Quality of answer compared to the question: %d, Reason: %s%n",
                     quality.getAnswerToQuestionQuality().getQuality(), quality.getAnswerToQuestionQuality().getReason());

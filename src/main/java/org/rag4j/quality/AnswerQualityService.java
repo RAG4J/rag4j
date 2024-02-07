@@ -2,11 +2,13 @@ package org.rag4j.quality;
 
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.models.*;
+import org.rag4j.chat.ChatPrompt;
+import org.rag4j.chat.ChatService;
+import org.rag4j.openai.OpenAIChatService;
 import org.rag4j.openai.OpenAIConstants;
+import org.rag4j.openai.OpenAIPrompt;
 import org.rag4j.tracker.RAGObserver;
 
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,10 +27,10 @@ import java.util.List;
  * combines the two scores into one object.
  */
 public class AnswerQualityService {
-    private final OpenAIClient client;
+    private final ChatService chatService;
 
-    public AnswerQualityService(OpenAIClient client) {
-        this.client = client;
+    public AnswerQualityService(ChatService chatService) {
+        this.chatService = chatService;
     }
 
     public AnswerQuality determineQualityOfAnswer(RAGObserver ragObserver) {
@@ -42,14 +44,13 @@ public class AnswerQualityService {
         String answer = ragObserver.getAnswer();
         String question = ragObserver.getQuestion();
 
-        OpenAIPrompt openAIPrompt = new OpenAIPrompt(
-                Path.of("/quality/quality_of_answer_to_question_system.txt"),
-                Path.of("/quality/quality_of_answer_to_question_user.txt")
-        );
-        ChatCompletionsOptions options = openAIPrompt.constructPrompt(List.of(), List.of(question, answer));
+        ChatPrompt prompt = ChatPrompt.builder()
+                .systemMessageFilename("/quality/quality_of_answer_to_question_system.txt")
+                .userMessageFilename("/quality/quality_of_answer_to_question_user.txt")
+                .userParams(List.of(question, answer))
+                .build();
 
-        ChatCompletions chatCompletions = client.getChatCompletions(OpenAIConstants.GPT4, options);
-        String content = chatCompletions.getChoices().getFirst().getMessage().getContent();
+        String content = chatService.askForQuality(prompt);
 
         return splitString(content, AnswerToQuestionQuality.class);
     }
@@ -58,14 +59,13 @@ public class AnswerQualityService {
         String answer = ragObserver.getAnswer();
         String context = ragObserver.getContext();
 
-        OpenAIPrompt openAIPrompt = new OpenAIPrompt(
-                Path.of("/quality/quality_of_answer_from_context_system.txt"),
-                Path.of("/quality/quality_of_answer_from_context_user.txt")
-        );
-        ChatCompletionsOptions options = openAIPrompt.constructPrompt(List.of(), List.of(answer, context));
+        ChatPrompt prompt = ChatPrompt.builder()
+                .systemMessageFilename("/quality/quality_of_answer_from_context_system.txt")
+                .userMessageFilename("/quality/quality_of_answer_from_context_user.txt")
+                .userParams(List.of(answer, context))
+                .build();
 
-        ChatCompletions chatCompletions = client.getChatCompletions(OpenAIConstants.GPT4, options);
-        String content = chatCompletions.getChoices().getFirst().getMessage().getContent();
+        String content = chatService.askForQuality(prompt);
 
         return splitString(content, AnswerFromContextQuality.class);
     }
