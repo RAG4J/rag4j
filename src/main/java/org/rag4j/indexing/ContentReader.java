@@ -1,7 +1,5 @@
 package org.rag4j.indexing;
 
-import org.rag4j.domain.InputDocument;
-
 import java.util.stream.Stream;
 
 /**
