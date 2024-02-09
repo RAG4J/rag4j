@@ -1,7 +1,6 @@
 package org.rag4j.indexing;
 
-import org.rag4j.domain.Chunk;
-import org.rag4j.domain.InputDocument;
+import org.rag4j.rag.model.Chunk;
 
 import java.util.List;
 
