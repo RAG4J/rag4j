@@ -1,4 +1,4 @@
-package org.rag4j.util;
+package org.rag4j.util.keyloader;
 
 import org.slf4j.Logger;
 
@@ -14,6 +14,12 @@ import java.security.Key;
 import java.util.Base64;
 import java.util.Properties;
 
+/**
+ * This class is used to load required keys to connect to OpenAI and Weaviate. The keys are obtained from environment
+ * variables. If the environment variables are not available, the keys are obtained from a properties file. The
+ * properties file can be on your path, or it can be loaded from a remote location. The properties file is encrypted if
+ * it is loaded from a remote location. The key for the encryption is obtained from the environment variable SECRET_KEY.
+ */
 public class KeyLoader {
     private final static String WEAVIATE_API_KEY = "weaviate_api_key";
     private final static String WEAVIATE_URL = "weaviate_url";

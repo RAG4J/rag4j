@@ -1,14 +1,13 @@
 package org.rag4j.applications.indexing;
 
-import org.rag4j.applications.VasaContentReader;
 import org.rag4j.indexing.IndexingService;
-import org.rag4j.indexing.splitters.OpenNLPSentenceSplitter;
+import org.rag4j.indexing.splitters.SentenceSplitter;
 import org.rag4j.integrations.openai.OpenAIEmbedder;
 import org.rag4j.integrations.weaviate.retrieval.WeaviateRetriever;
 import org.rag4j.rag.embedding.Embedder;
 import org.rag4j.rag.model.RelevantChunk;
 import org.rag4j.rag.retrieval.Retriever;
-import org.rag4j.util.KeyLoader;
+import org.rag4j.util.keyloader.KeyLoader;
 import org.rag4j.integrations.weaviate.WeaviateAccess;
 import org.rag4j.integrations.weaviate.indexer.WeaviateChunkIndexer;
 import org.rag4j.integrations.weaviate.store.WeaviateContentStore;
@@ -45,7 +44,7 @@ public class AppIndexerWeaviate {
 
         // Use the components
         createWeaviateSchema(weaviateAccess);
-        indexingService.indexDocuments(new VasaContentReader(), new OpenNLPSentenceSplitter());
+        indexingService.indexDocuments(new VasaContentReader(), new SentenceSplitter());
         String question = "Since when was the Vasa available for the public to visit?";
         List<RelevantChunk> relevantChunks = retriever.findRelevantChunks(question, 1);
 

@@ -1,18 +1,16 @@
 package org.rag4j.applications.generation;
 
-import com.azure.ai.openai.OpenAIClient;
 import org.rag4j.rag.generation.chat.ChatService;
 import org.rag4j.rag.generation.AnswerGenerator;
 import org.rag4j.rag.generation.ObservedAnswerGenerator;
 import org.rag4j.integrations.openai.OpenAIAnswerGenerator;
 import org.rag4j.integrations.openai.OpenAIChatService;
-import org.rag4j.integrations.openai.OpenAIConstants;
 import org.rag4j.integrations.openai.OpenAIFactory;
 import org.rag4j.rag.generation.quality.AnswerQuality;
 import org.rag4j.rag.generation.quality.AnswerQualityService;
 import org.rag4j.rag.tracker.RAGObserver;
 import org.rag4j.rag.tracker.RAGTracker;
-import org.rag4j.util.KeyLoader;
+import org.rag4j.util.keyloader.KeyLoader;
 
 /**
  * Shows how to generate an answer to a question from a context using the OpenAI API. To keep things simple, the

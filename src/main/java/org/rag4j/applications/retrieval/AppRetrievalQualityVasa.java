@@ -1,9 +1,9 @@
 package org.rag4j.applications.retrieval;
 
-import org.rag4j.applications.VasaContentReader;
+import org.rag4j.applications.indexing.VasaContentReader;
 import org.rag4j.rag.embedding.Embedder;
 import org.rag4j.indexing.IndexingService;
-import org.rag4j.indexing.splitters.OpenNLPSentenceSplitter;
+import org.rag4j.indexing.splitters.SentenceSplitter;
 import org.rag4j.rag.embedding.local.OnnxBertEmbedder;
 import org.rag4j.integrations.openai.OpenAIEmbedder;
 import org.rag4j.rag.retrieval.quality.QuestionAnswerRecord;
@@ -11,7 +11,7 @@ import org.rag4j.rag.retrieval.quality.RetrievalQuality;
 import org.rag4j.rag.retrieval.quality.RetrievalQualityService;
 import org.rag4j.rag.retrieval.Retriever;
 import org.rag4j.rag.store.local.InternalContentStore;
-import org.rag4j.util.KeyLoader;
+import org.rag4j.util.keyloader.KeyLoader;
 import org.rag4j.integrations.weaviate.WeaviateAccess;
 import org.rag4j.integrations.weaviate.retrieval.WeaviateRetriever;
 
@@ -42,7 +42,7 @@ public class AppRetrievalQualityVasa {
         Embedder embedder = new OnnxBertEmbedder();
         InternalContentStore contentStore = new InternalContentStore(embedder);
         IndexingService indexingService = new IndexingService(contentStore);
-        indexingService.indexDocuments(new VasaContentReader(), new OpenNLPSentenceSplitter());
+        indexingService.indexDocuments(new VasaContentReader(), new SentenceSplitter());
 
         System.out.println("Use the internal embedder, and the internal content store");
         printQuality(contentStore, embedder);

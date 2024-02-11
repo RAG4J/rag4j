@@ -3,7 +3,7 @@ package org.rag4j.integrations.openai;
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.models.*;
 import org.rag4j.rag.generation.QuestionGenerator;
-import org.rag4j.util.KeyLoader;
+import org.rag4j.util.keyloader.KeyLoader;
 
 import java.util.ArrayList;
 import java.util.List;

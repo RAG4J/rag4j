@@ -1,8 +1,11 @@
-package org.rag4j.util;
+package org.rag4j.util.keyloader;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.rag4j.util.keyloader.EnvironmentVariableProvider;
+import org.rag4j.util.keyloader.KeyLoader;
+import org.rag4j.util.keyloader.KeyLoaderException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

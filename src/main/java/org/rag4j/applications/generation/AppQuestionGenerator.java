@@ -12,7 +12,7 @@ import org.rag4j.rag.generation.QuestionGeneratorService;
 import org.rag4j.rag.retrieval.quality.RetrievalQuality;
 import org.rag4j.rag.retrieval.quality.RetrievalQualityService;
 import org.rag4j.rag.store.local.InternalContentStore;
-import org.rag4j.util.KeyLoader;
+import org.rag4j.util.keyloader.KeyLoader;
 
 /**
  * Generates a question for a piece of text using an LLM and uses the retrieval quality service to evaluate the

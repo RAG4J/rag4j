@@ -18,12 +18,12 @@ class SentenceSplitterTest {
     @Mock
     private InputDocument mockInputDocument;
 
-    private OpenNLPSentenceSplitter sentenceSplitter;
+    private SentenceSplitter sentenceSplitter;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        sentenceSplitter = new OpenNLPSentenceSplitter();
+        sentenceSplitter = new SentenceSplitter();
     }
 
     @Test

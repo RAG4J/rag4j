@@ -6,7 +6,7 @@ import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import org.rag4j.rag.generation.chat.ChatPrompt;
 import org.rag4j.rag.generation.chat.ChatService;
-import org.rag4j.util.KeyLoader;
+import org.rag4j.util.keyloader.KeyLoader;
 import org.slf4j.Logger;
 
 public class OpenAIChatService implements ChatService {
