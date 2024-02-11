@@ -1,9 +1,9 @@
 package org.rag4j.applications.generation;
 
+import com.azure.ai.openai.OpenAIClient;
 import org.rag4j.rag.generation.chat.ChatService;
 import org.rag4j.rag.generation.AnswerGenerator;
 import org.rag4j.rag.generation.ObservedAnswerGenerator;
-import org.rag4j.integrations.openai.OpenAIAnswerGenerator;
 import org.rag4j.integrations.openai.OpenAIChatService;
 import org.rag4j.integrations.openai.OpenAIFactory;
 import org.rag4j.rag.generation.quality.AnswerQuality;
@@ -19,9 +19,10 @@ import org.rag4j.util.keyloader.KeyLoader;
 public class AppAnswerGenerator {
     public static void main(String[] args) {
         KeyLoader keyLoader = new KeyLoader();
+        OpenAIClient openAIClient = OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey());
 
-        ChatService chatService = new OpenAIChatService(OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey()));
-        AnswerGenerator answerGenerator = new OpenAIAnswerGenerator(chatService);
+        ChatService chatService = new OpenAIChatService(openAIClient);
+        AnswerGenerator answerGenerator = new AnswerGenerator(chatService);
 
         String question = "Since when was the Vasa available for the public to visit?";
         String context = "By Friday 16 February 1962, the ship is ready to be displayed to the general public at the " +
@@ -33,8 +34,8 @@ public class AppAnswerGenerator {
         System.out.printf("The answer is: %s%n", answer);
 
         // Now with the observer present
-        ObservedAnswerGenerator observedAnswerGenerator = new ObservedAnswerGenerator(answerGenerator);
-        String observedAnswer = observedAnswerGenerator.generateAnswer(question, context);
+        ObservedAnswerGenerator observedAnswerGenerator = new ObservedAnswerGenerator(chatService);
+        observedAnswerGenerator.generateAnswer(question, context);
 
         RAGObserver ragObserver = RAGTracker.getRAGObserver();
         RAGTracker.cleanup();

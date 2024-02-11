@@ -4,7 +4,6 @@ import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import org.rag4j.rag.embedding.Embedder;
-import org.rag4j.util.keyloader.KeyLoader;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,19 +15,6 @@ import java.util.List;
 public class OpenAIEmbedder implements Embedder {
     private final OpenAIClient client;
     private final String model;
-
-    public OpenAIEmbedder() {
-        this(new KeyLoader(), OpenAIConstants.DEFAULT_EMBEDDING);
-    }
-
-    public OpenAIEmbedder(KeyLoader keyLoader) {
-        this(keyLoader, OpenAIConstants.DEFAULT_EMBEDDING);
-    }
-
-    public OpenAIEmbedder(KeyLoader keyLoader, String model) {
-        this.client = OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey());
-        this.model = model;
-    }
 
     public OpenAIEmbedder(OpenAIClient client) {
         this(client, OpenAIConstants.DEFAULT_EMBEDDING);

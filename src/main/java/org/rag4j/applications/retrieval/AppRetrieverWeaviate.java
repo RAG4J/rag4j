@@ -1,5 +1,7 @@
 package org.rag4j.applications.retrieval;
 
+import com.azure.ai.openai.OpenAIClient;
+import org.rag4j.integrations.openai.OpenAIFactory;
 import org.rag4j.rag.model.Chunk;
 import org.rag4j.rag.model.RelevantChunk;
 import org.rag4j.rag.embedding.Embedder;
@@ -19,8 +21,9 @@ public class AppRetrieverWeaviate {
     public static void main(String[] args) {
         // Initialize the components
         KeyLoader keyLoader = new KeyLoader();
+        OpenAIClient openAIClient = OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey());
         WeaviateAccess weaviateAccess = new WeaviateAccess(keyLoader);
-        Embedder embedder = new OpenAIEmbedder(keyLoader);
+        Embedder embedder = new OpenAIEmbedder(openAIClient);
 
         List<String> additionalFields = List.of("title", "timerange");
         boolean useHybridSearch = true;

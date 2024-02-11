@@ -1,7 +1,6 @@
 package org.rag4j.util.keyloader;
 
 import org.junit.jupiter.api.Test;
-import org.rag4j.util.keyloader.EnvironmentVariableProvider;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

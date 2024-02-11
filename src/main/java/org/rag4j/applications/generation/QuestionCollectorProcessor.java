@@ -9,6 +9,10 @@ import org.rag4j.rag.retrieval.ChunkProcessor;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Processor that generates a question for each chunk of text and collects the generated questions. It provides a list
+ * of {@link QuestionAnswerRecord} that contains the question, the text and the chunk id.
+ */
 public class QuestionCollectorProcessor implements ChunkProcessor {
 
     private final QuestionGeneratorService questionGeneratorService;

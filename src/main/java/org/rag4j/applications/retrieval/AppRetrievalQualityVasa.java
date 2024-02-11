@@ -1,6 +1,8 @@
 package org.rag4j.applications.retrieval;
 
+import com.azure.ai.openai.OpenAIClient;
 import org.rag4j.applications.indexing.VasaContentReader;
+import org.rag4j.integrations.openai.OpenAIFactory;
 import org.rag4j.rag.embedding.Embedder;
 import org.rag4j.indexing.IndexingService;
 import org.rag4j.indexing.splitters.SentenceSplitter;
@@ -49,7 +51,8 @@ public class AppRetrievalQualityVasa {
 
         System.out.println("Use the OpenAI embedder, and the Weaviate content store");
         KeyLoader keyLoader = new KeyLoader();
-        embedder = new OpenAIEmbedder(keyLoader);
+        OpenAIClient openAIClient = OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey());
+        embedder = new OpenAIEmbedder(openAIClient);
         WeaviateAccess weaviateAccess = new WeaviateAccess(keyLoader);
         Retriever retriever = new WeaviateRetriever(weaviateAccess, embedder);
         printQuality(retriever, embedder);

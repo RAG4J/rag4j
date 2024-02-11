@@ -3,11 +3,7 @@ package org.rag4j.util.keyloader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.rag4j.util.keyloader.EnvironmentVariableProvider;
-import org.rag4j.util.keyloader.KeyLoader;
-import org.rag4j.util.keyloader.KeyLoaderException;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -24,12 +20,10 @@ public class KeyLoaderTest {
     public static final String TEST_SECRET_KEY = "thisisjustatestkeythatweneednow9";
 
     private HttpClient client;
-    private HttpResponse<ByteArrayInputStream> response;
 
     @BeforeEach
     public void setup() {
         client = mock(HttpClient.class);
-        response = mock(HttpResponse.class);
     }
 
     @Test
@@ -44,7 +38,7 @@ public class KeyLoaderTest {
 
     @Test
     @DisplayName("Should return OpenAI key from properties file")
-    public void shouldReturnOpenAIKeyFromPropertiesFile() throws IOException, InterruptedException {
+    public void shouldReturnOpenAIKeyFromPropertiesFile() {
         EnvironmentVariableProvider envProvider = mock(EnvironmentVariableProvider.class);
         when(envProvider.getEnv("SECRET_KEY")).thenReturn(TEST_SECRET_KEY);
 

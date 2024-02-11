@@ -21,10 +21,6 @@ public class WeaviateAccess {
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(WeaviateAccess.class);
     private final WeaviateClient client;
 
-    public WeaviateAccess() {
-        this(new KeyLoader());
-    }
-
     public WeaviateAccess(KeyLoader keyLoader) {
         Config config = new Config("https", keyLoader.getWeaviateURL());
         try {
