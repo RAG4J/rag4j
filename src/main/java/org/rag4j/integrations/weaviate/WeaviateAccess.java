@@ -9,7 +9,7 @@ import io.weaviate.client.v1.data.model.WeaviateObject;
 import io.weaviate.client.v1.misc.model.Meta;
 import io.weaviate.client.v1.schema.model.WeaviateClass;
 import lombok.Getter;
-import org.rag4j.util.KeyLoader;
+import org.rag4j.util.keyloader.KeyLoader;
 import org.slf4j.Logger;
 
 import java.util.Map;

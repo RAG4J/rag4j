@@ -18,7 +18,7 @@ import org.rag4j.rag.tracker.LoggingRAGObserverPersistor;
 import org.rag4j.rag.tracker.RAGObserver;
 import org.rag4j.rag.tracker.RAGObserverPersistor;
 import org.rag4j.rag.tracker.RAGTracker;
-import org.rag4j.util.KeyLoader;
+import org.rag4j.util.keyloader.KeyLoader;
 
 import java.util.List;
 

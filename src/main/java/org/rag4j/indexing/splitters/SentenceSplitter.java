@@ -15,7 +15,7 @@ import java.util.List;
  * This sentence splitter makes of the OpenNLP sentence splitter. It does not work really good if you ask me. We might
  * need a better one that knows how to distill a title using spaces or enters for instance.
  */
-public class OpenNLPSentenceSplitter implements Splitter {
+public class SentenceSplitter implements Splitter {
     public List<Chunk> split(InputDocument inputDocument) {
         String text = inputDocument.getText();
         SentenceDetectorME sentenceDetector = createSentenceDetector();

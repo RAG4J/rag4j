@@ -1,4 +1,4 @@
-package org.rag4j.applications;
+package org.rag4j.applications.indexing;
 
 import org.rag4j.indexing.InputDocument;
 import org.rag4j.indexing.ContentReader;

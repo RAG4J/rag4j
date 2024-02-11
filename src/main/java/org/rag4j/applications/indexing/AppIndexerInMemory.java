@@ -1,6 +1,5 @@
 package org.rag4j.applications.indexing;
 
-import org.rag4j.applications.VasaContentReader;
 import org.rag4j.indexing.ContentReader;
 import org.rag4j.indexing.Splitter;
 import org.rag4j.rag.embedding.Embedder;
