@@ -10,10 +10,10 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 public class VasaContentReader implements ContentReader {
-    private final String filename = "vasa-timeline.jsonl";
 
     @Override
     public Stream<InputDocument> read() {
+        String filename = "vasa-timeline.jsonl";
         JsonlReader jsonlReader = new JsonlReader(List.of("title", "timerange", "body"), filename);
         return jsonlReader.getLines().stream().map(line -> {
             Map<String, Object> properties = Map.of(

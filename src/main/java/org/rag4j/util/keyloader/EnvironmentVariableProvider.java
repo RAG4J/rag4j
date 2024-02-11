@@ -11,7 +11,7 @@ import java.util.Properties;
  */
 public class EnvironmentVariableProvider {
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(EnvironmentVariableProvider.class);
-    private Properties props = new Properties();
+    private final Properties props = new Properties();
 
     public EnvironmentVariableProvider() {
         try (InputStream input = getClass().getClassLoader().getResourceAsStream("env.properties")) {

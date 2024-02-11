@@ -1,16 +1,16 @@
 package org.rag4j.applications.generation;
 
+import com.azure.ai.openai.OpenAIClient;
 import org.rag4j.indexing.IndexingService;
 import org.rag4j.indexing.InputDocument;
-import org.rag4j.rag.generation.QuestionGenerator;
-import org.rag4j.rag.embedding.Embedder;
 import org.rag4j.indexing.splitters.SingleChunkSplitter;
-import org.rag4j.integrations.openai.OpenAIConstants;
+import org.rag4j.integrations.openai.OpenAIChatService;
 import org.rag4j.integrations.openai.OpenAIEmbedder;
-import org.rag4j.integrations.openai.OpenAIQuestionGenerator;
+import org.rag4j.integrations.openai.OpenAIFactory;
+import org.rag4j.rag.embedding.Embedder;
+import org.rag4j.rag.generation.QuestionGenerator;
 import org.rag4j.rag.generation.QuestionGeneratorService;
-import org.rag4j.rag.retrieval.quality.RetrievalQuality;
-import org.rag4j.rag.retrieval.quality.RetrievalQualityService;
+import org.rag4j.rag.generation.chat.ChatService;
 import org.rag4j.rag.store.local.InternalContentStore;
 import org.rag4j.util.keyloader.KeyLoader;
 
@@ -22,8 +22,10 @@ public class AppQuestionGenerator {
 
     public static void main(String[] args) {
         KeyLoader keyLoader = new KeyLoader();
-        Embedder embedder = new OpenAIEmbedder(keyLoader);
+        OpenAIClient openAIClient = OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey());
+        Embedder embedder = new OpenAIEmbedder(openAIClient);
 
+        // Index a document into the content store
         InputDocument inputDocument = InputDocument.builder()
                 .documentId("vasa")
                 .text("The Vasa was a Swedish warship built between 1626 and 1628. The ship foundered and sank after " +
@@ -34,11 +36,15 @@ public class AppQuestionGenerator {
         IndexingService indexingService = new IndexingService(contentStore);
         indexingService.indexDocument(inputDocument, new SingleChunkSplitter());
 
-        QuestionGenerator questionGenerator = new OpenAIQuestionGenerator(keyLoader, OpenAIConstants.DEFAULT_MODEL);
+        // Generate questions for the indexed chunk, as we have just one, by looping over them and collecting the
+        // questions using the processor.
+        ChatService chatService = new OpenAIChatService(OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey()));
+        QuestionGenerator questionGenerator = new QuestionGenerator(chatService);
         QuestionGeneratorService questionGeneratorService = new QuestionGeneratorService(contentStore, questionGenerator);
         QuestionCollectorProcessor questionCollectorProcessor = new QuestionCollectorProcessor(questionGeneratorService);
         contentStore.loopOverChunks(questionCollectorProcessor);
 
+        // Use the gathered questions and print the information
         questionCollectorProcessor.getQuestionAnswerRecords().forEach(questionAnswerRecord -> {
             System.out.printf("Question: %s%n", questionAnswerRecord.getQuestion());
             System.out.printf("Text: %s%n", questionAnswerRecord.getText());
@@ -46,12 +52,5 @@ public class AppQuestionGenerator {
             System.out.printf("Document id: %s%n", questionAnswerRecord.getDocumentId());
             System.out.println();
         });
-
-        RetrievalQualityService retrievalQualityService = new RetrievalQualityService(contentStore);
-        RetrievalQuality retrievalQuality = retrievalQualityService.obtainRetrievalQuality(
-                questionCollectorProcessor.getQuestionAnswerRecords(), embedder);
-
-        System.out.printf("Precision: %.3f%n", retrievalQuality.getPrecision());
-        System.out.printf("Total items: %d%n", retrievalQuality.totalItems());
     }
 }

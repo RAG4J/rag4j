@@ -134,7 +134,7 @@ public class KeyLoader {
 
     /**
      * This runner can be use to generate the encrypted properties file. It is not used in the application itself.
-     * @param args
+     * @param args The arguments are not used
      */
     public static void main(String[] args) {
         String secretKey = "thisisjustatestkeythatweneednow9";

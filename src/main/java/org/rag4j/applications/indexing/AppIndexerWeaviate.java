@@ -1,8 +1,10 @@
 package org.rag4j.applications.indexing;
 
+import com.azure.ai.openai.OpenAIClient;
 import org.rag4j.indexing.IndexingService;
 import org.rag4j.indexing.splitters.SentenceSplitter;
 import org.rag4j.integrations.openai.OpenAIEmbedder;
+import org.rag4j.integrations.openai.OpenAIFactory;
 import org.rag4j.integrations.weaviate.retrieval.WeaviateRetriever;
 import org.rag4j.rag.embedding.Embedder;
 import org.rag4j.rag.model.RelevantChunk;
@@ -33,8 +35,9 @@ public class AppIndexerWeaviate {
     public static void main(String[] args) {
         // Initialize the components
         KeyLoader keyLoader = new KeyLoader();
+        OpenAIClient openAIClient = OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey());
 
-        Embedder embedder = new OpenAIEmbedder(keyLoader);
+        Embedder embedder = new OpenAIEmbedder(openAIClient);
         WeaviateAccess weaviateAccess = new WeaviateAccess(keyLoader);
 
         WeaviateChunkIndexer weaviateChunkIndexer = new WeaviateChunkIndexer(weaviateAccess);

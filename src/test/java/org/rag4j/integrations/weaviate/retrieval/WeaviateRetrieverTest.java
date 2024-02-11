@@ -101,39 +101,4 @@ public class WeaviateRetrieverTest {
         assertEquals(expectedChunks, actualChunks);
     }
 
-//    @Test
-//    public void findRelevantChunksThrowsExceptionWhenErrorOccurs() {
-//        String question = "test question";
-//        List<Double> vector = Arrays.asList(1.0, 2.0, 3.0);
-//        int maxResults = 5;
-//
-//        when(embedder.embed(question)).thenReturn(vector);
-//        when(weaviateAccess.getClient().graphQL().get().run().getError()).thenReturn(new Error());
-//
-//        assertThrows(WeaviateException.class, () -> weaviateRetriever.findRelevantChunks(question, maxResults));
-//    }
-//
-//    @Test
-//    public void getChunkReturnsExpectedChunk() {
-//        String documentId = "testId";
-//        int chunkId = 1;
-//        Chunk expectedChunk = new Chunk();
-//
-//        when(weaviateAccess.getClient().graphQL().get().run().getResult()).thenReturn(new GraphQLResponse());
-//        when(WeaviateResponseParser.parseGraphQLResponse(new GraphQLResponse())).thenReturn(expectedChunk);
-//
-//        Chunk actualChunk = weaviateRetriever.getChunk(documentId, chunkId);
-//
-//        assertEquals(expectedChunk, actualChunk);
-//    }
-//
-//    @Test
-//    public void getChunkThrowsExceptionWhenErrorOccurs() {
-//        String documentId = "testId";
-//        int chunkId = 1;
-//
-//        when(weaviateAccess.getClient().graphQL().get().run().getError()).thenReturn(new Error());
-//
-//        assertThrows(WeaviateException.class, () -> weaviateRetriever.getChunk(documentId, chunkId));
-//    }
 }

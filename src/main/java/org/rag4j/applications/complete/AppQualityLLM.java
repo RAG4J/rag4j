@@ -1,11 +1,13 @@
 package org.rag4j.applications.complete;
 
 import com.azure.ai.openai.OpenAIClient;
-import org.rag4j.integrations.openai.*;
+import org.rag4j.integrations.openai.OpenAIChatService;
+import org.rag4j.integrations.openai.OpenAIConstants;
+import org.rag4j.integrations.openai.OpenAIEmbedder;
+import org.rag4j.integrations.openai.OpenAIFactory;
 import org.rag4j.integrations.weaviate.WeaviateAccess;
 import org.rag4j.integrations.weaviate.retrieval.WeaviateRetriever;
 import org.rag4j.rag.embedding.Embedder;
-import org.rag4j.rag.generation.AnswerGenerator;
 import org.rag4j.rag.generation.ObservedAnswerGenerator;
 import org.rag4j.rag.generation.chat.ChatService;
 import org.rag4j.rag.generation.quality.AnswerQuality;
@@ -26,8 +28,9 @@ public class AppQualityLLM {
 
     public static void main(String[] args) {
         KeyLoader keyLoader = new KeyLoader();
+        OpenAIClient openAIClient = OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey());
         WeaviateAccess weaviateAccess = new WeaviateAccess(keyLoader);
-        Embedder embedder = new OpenAIEmbedder(keyLoader);
+        Embedder embedder = new OpenAIEmbedder(openAIClient, OpenAIConstants.DEFAULT_EMBEDDING);
 
         Retriever retriever = new WeaviateRetriever(weaviateAccess, embedder);
         ObservedRetriever observedRetriever = new ObservedRetriever(retriever);
@@ -46,9 +49,8 @@ public class AppQualityLLM {
 
             OpenAIClient client = OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey());
             ChatService chatService = new OpenAIChatService(client);
-            AnswerGenerator answerGenerator = new OpenAIAnswerGenerator(chatService);
 
-            ObservedAnswerGenerator observedAnswerGenerator = new ObservedAnswerGenerator(answerGenerator);
+            ObservedAnswerGenerator observedAnswerGenerator = new ObservedAnswerGenerator(chatService);
             String answer = observedAnswerGenerator.generateAnswer(question, retrievalOutput.constructContext());
             System.out.printf("Question: %s%nAnswer: %s%n", question, answer);
             System.out.printf("Context: %s%n", retrievalOutput.constructContext());

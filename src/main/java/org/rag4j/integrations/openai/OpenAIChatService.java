@@ -6,23 +6,21 @@ import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import org.rag4j.rag.generation.chat.ChatPrompt;
 import org.rag4j.rag.generation.chat.ChatService;
-import org.rag4j.util.keyloader.KeyLoader;
 import org.slf4j.Logger;
+
+import static org.rag4j.integrations.openai.OpenAIConstants.DEFAULT_MODEL;
 
 public class OpenAIChatService implements ChatService {
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(OpenAIChatService.class);
-    private final String model = OpenAIConstants.GPT4;
+    private final String model;
     private final OpenAIClient client;
 
-    public OpenAIChatService() {
-        this(new KeyLoader());
-    }
-
-    public OpenAIChatService(KeyLoader keyLoader) {
-        this(OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey()));
-    }
-
     public OpenAIChatService(OpenAIClient client) {
+        this(client, DEFAULT_MODEL);
+    }
+
+    public OpenAIChatService(OpenAIClient client, String model) {
+        this.model = model;
         this.client = client;
     }
 
