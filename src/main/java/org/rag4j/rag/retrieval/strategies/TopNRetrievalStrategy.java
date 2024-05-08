@@ -25,7 +25,7 @@ public class TopNRetrievalStrategy implements RetrievalStrategy {
     }
 
     @Override
-    public RetrievalOutput retrieve(String question, List<Double> vector, int topN) {
+    public RetrievalOutput retrieve(String question, List<Float> vector, int topN) {
         List<RelevantChunk> relevantChunks = retriever.findRelevantChunks(question, vector, topN);
         return extractOutputFromRelevantChunks(relevantChunks);
     }

@@ -11,5 +11,5 @@ public interface Embedder {
      * @param text the text to create an embedding for
      * @return the embedding
      */
-    List<Double> embed(String text);
+    List<Float> embed(String text);
 }

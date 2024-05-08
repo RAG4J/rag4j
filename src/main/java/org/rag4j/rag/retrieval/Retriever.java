@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface Retriever {
     List<RelevantChunk> findRelevantChunks(String question, int maxResults);
-    List<RelevantChunk> findRelevantChunks(String question, List<Double> vector, int maxResults);
+    List<RelevantChunk> findRelevantChunks(String question, List<Float> vector, int maxResults);
 
     Chunk getChunk(String documentId, int chunkId);
 

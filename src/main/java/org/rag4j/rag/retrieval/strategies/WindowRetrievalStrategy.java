@@ -38,7 +38,7 @@ public class WindowRetrievalStrategy implements RetrievalStrategy {
     }
 
     @Override
-    public RetrievalOutput retrieve(String question, List<Double> vector, int maxResults) {
+    public RetrievalOutput retrieve(String question, List<Float> vector, int maxResults) {
         return retrieve(question, vector, maxResults, false);
     }
 
@@ -50,7 +50,7 @@ public class WindowRetrievalStrategy implements RetrievalStrategy {
     }
 
     @Override
-    public RetrievalOutput retrieve(String question, List<Double> vector, int maxResults, boolean observe) {
+    public RetrievalOutput retrieve(String question, List<Float> vector, int maxResults, boolean observe) {
         List<RelevantChunk> relevantItems = retriever.findRelevantChunks(question, vector, maxResults);
 
         return extractWindowFromRelevantChunk(relevantItems, observe);

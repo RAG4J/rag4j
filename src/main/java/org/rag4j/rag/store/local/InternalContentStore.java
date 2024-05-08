@@ -16,7 +16,7 @@ import java.util.*;
  * and finding to create vector representations from the provided texts.
  */
 public class InternalContentStore implements ContentStore, Retriever {
-    private final Map<String, List<Double>> vectorStore;
+    private final Map<String, List<Float>> vectorStore;
     private final Map<String, Chunk> dataStore;
 
     private final Embedder embedder;
@@ -32,7 +32,7 @@ public class InternalContentStore implements ContentStore, Retriever {
         chunks.forEach(chunk -> {
             String key = extractKey(chunk.getDocumentId(), chunk.getChunkId());
             String text = chunk.getText();
-            List<Double> vector = embedder.embed(text);
+            List<Float> vector = embedder.embed(text);
             this.vectorStore.put(key, vector);
             this.dataStore.put(key, chunk);
         });
@@ -44,11 +44,11 @@ public class InternalContentStore implements ContentStore, Retriever {
     }
 
     @Override
-    public List<RelevantChunk> findRelevantChunks(String question, List<Double> vector, int maxResults) {
+    public List<RelevantChunk> findRelevantChunks(String question, List<Float> vector, int maxResults) {
         EuclideanDistance distanceCalculator = new EuclideanDistance();
         List<RelevantChunk> relevantChunks = new ArrayList<>();
 
-        for (Map.Entry<String, List<Double>> entry : this.vectorStore.entrySet()) {
+        for (Map.Entry<String, List<Float>> entry : this.vectorStore.entrySet()) {
             double distance = distanceCalculator.compute(listToArrayWithDouble(vector), listToArrayWithDouble(entry.getValue()));
             Chunk chunk = this.dataStore.get(entry.getKey());
             relevantChunks.add(new RelevantChunk(chunk, distance));
@@ -69,8 +69,8 @@ public class InternalContentStore implements ContentStore, Retriever {
         this.dataStore.values().forEach(chunkProcessor::process);
     }
 
-    private static double[] listToArrayWithDouble(List<Double> vector) {
-        return vector.stream().mapToDouble(Double::doubleValue).toArray();
+    private static double[] listToArrayWithDouble(List<Float> vector) {
+        return vector.stream().mapToDouble(Float::doubleValue).toArray();
     }
 
     private static String extractKey(String documentId, int chunkId) {

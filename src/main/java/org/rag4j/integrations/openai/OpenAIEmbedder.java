@@ -26,7 +26,7 @@ public class OpenAIEmbedder implements Embedder {
     }
 
     @Override
-    public List<Double> embed(String text) {
+    public List<Float> embed(String text) {
         EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(Collections.singletonList(text));
 
         Embeddings embeddings = this.client.getEmbeddings(this.model, embeddingsOptions);
