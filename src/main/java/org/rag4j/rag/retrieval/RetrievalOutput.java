@@ -17,6 +17,7 @@ public class RetrievalOutput {
 
     @Builder
     @Getter
+    @EqualsAndHashCode
     public static class RetrievalOutputItem {
         private String documentId;
         private int chunkId;
