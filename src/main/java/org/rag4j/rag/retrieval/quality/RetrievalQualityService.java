@@ -32,7 +32,7 @@ public class RetrievalQualityService {
         Set<String> incorrect = new HashSet<>();
         questionAnswerRecords.forEach(questionAnswerRecord -> {
             String question = questionAnswerRecord.getQuestion();
-            List<Double> embed = embedder.embed(question);
+            List<Float> embed = embedder.embed(question);
             RelevantChunk relevantChunks = this.retriever.findRelevantChunks(question, embed, 1).getFirst();
             if (relevantChunks.getChunkId() == questionAnswerRecord.getChunkId() && relevantChunks.getDocumentId().equals(questionAnswerRecord.getDocumentId())) {
                 correct.add(relevantChunks.getDocumentChunkId());

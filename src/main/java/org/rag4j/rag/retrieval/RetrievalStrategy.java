@@ -20,7 +20,7 @@ public interface RetrievalStrategy {
 
     RetrievalOutput retrieve(String question, int maxResults);
 
-    RetrievalOutput retrieve(String question, List<Double> vector, int maxResults);
+    RetrievalOutput retrieve(String question, List<Float> vector, int maxResults);
 
     /**
      * Some Retrieval strategies do not add anything to the observer. For example, the {@link TopNRetrievalStrategy}
@@ -41,7 +41,7 @@ public interface RetrievalStrategy {
      * @param observe If we use the tracker to observe
      * @return The context
      */
-    default RetrievalOutput retrieve(String question, List<Double> vector, int maxResults, boolean observe) {
+    default RetrievalOutput retrieve(String question, List<Float> vector, int maxResults, boolean observe) {
         return retrieve(question, vector, maxResults);
     }
 }

@@ -13,13 +13,13 @@ public class OnnxBertEmbedder implements Embedder {
     }
 
     @Override
-    public List<Double> embed(String text) {
+    public List<Float> embed(String text) {
         float[] embed = model.embed(text);
 
-        List<Double> doubleList = new ArrayList<>();
+        List<Float> list = new ArrayList<>();
         for (float value : embed) {
-            doubleList.add((double) value);
+            list.add(value);
         }
-        return doubleList;
+        return list;
     }
 }

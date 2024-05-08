@@ -17,16 +17,14 @@ public class WeaviateChunkIndexer {
         this.weaviateAccess = weaviateAccess;
     }
 
-    public String indexChunk(Chunk chunk, List<Double> vector) {
+    public String indexChunk(Chunk chunk, List<Float> vector) {
         Map<String, Object> properties = new HashMap<>(chunk.getProperties());
         properties.put("documentId", chunk.getDocumentId());
         properties.put("chunkId", chunk.getChunkId());
         properties.put("totalChunks", chunk.getTotalChunks());
         properties.put("text", chunk.getText());
 
-        Float[] floatVector = vector.stream()
-                .map(Double::floatValue)
-                .toArray(Float[]::new);
+        Float[] floatVector = vector.toArray(new Float[0]);
 
         if (!chunk.getProperties().isEmpty()) {
             properties.putAll(chunk.getProperties());

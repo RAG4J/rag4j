@@ -55,10 +55,8 @@ public class WeaviateRetriever implements Retriever {
     }
 
     @Override
-    public List<RelevantChunk> findRelevantChunks(String question, List<Double> vector, int maxResults) {
-        Float[] floatVector = vector.stream()
-                .map(Double::floatValue)
-                .toArray(Float[]::new);
+    public List<RelevantChunk> findRelevantChunks(String question, List<Float> vector, int maxResults) {
+        Float[] floatVector = vector.toArray(new Float[0]);
 
         Get get = weaviateAccess.getClient().graphQL().get()
                 .withClassName(CLASS_NAME)

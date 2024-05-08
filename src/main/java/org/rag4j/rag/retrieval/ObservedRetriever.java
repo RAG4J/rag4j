@@ -25,7 +25,7 @@ public class ObservedRetriever implements Retriever {
     }
 
     @Override
-    public List<RelevantChunk> findRelevantChunks(String question, List<Double> vector, int maxResults) {
+    public List<RelevantChunk> findRelevantChunks(String question, List<Float> vector, int maxResults) {
         List<RelevantChunk> relevantChunks = retriever.findRelevantChunks(question, vector, maxResults);
 
         relevantChunks.forEach(relevantChunk -> RAGTracker.addRelevantChunks(relevantChunk.getDocumentChunkId(), relevantChunk.getText()));

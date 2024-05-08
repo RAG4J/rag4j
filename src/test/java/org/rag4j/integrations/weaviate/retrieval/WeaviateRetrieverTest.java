@@ -55,7 +55,7 @@ public class WeaviateRetrieverTest {
     @Test
     public void findRelevantChunksReturnsExpectedChunks() {
         String question = "test question";
-        List<Double> vector = Arrays.asList(1.0, 2.0, 3.0);
+        List<Float> vector = Arrays.asList(1.0f, 2.0f, 3.0f);
         int maxResults = 5;
 
         Chunk chunk1 = Chunk.builder()
