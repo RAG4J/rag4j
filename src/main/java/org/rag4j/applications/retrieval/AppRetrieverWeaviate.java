@@ -26,7 +26,7 @@ public class AppRetrieverWeaviate {
         Embedder embedder = new OpenAIEmbedder(openAIClient);
 
         List<String> additionalFields = List.of("title", "timerange");
-        boolean useHybridSearch = true;
+        boolean useHybridSearch = false;
         Retriever retriever = new WeaviateRetriever(weaviateAccess, embedder, useHybridSearch, additionalFields);
 
         // Use the components - Loop over all chunks
