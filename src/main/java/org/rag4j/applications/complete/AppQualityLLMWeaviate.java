@@ -24,7 +24,7 @@ import org.rag4j.util.keyloader.KeyLoader;
 
 import java.util.List;
 
-public class AppQualityLLM {
+public class AppQualityLLMWeaviate {
 
     public static void main(String[] args) {
         KeyLoader keyLoader = new KeyLoader();

@@ -74,6 +74,7 @@ public class WeaviateRetriever implements Retriever {
         } else {
             get.withNearVector(NearVectorArgument.builder()
                     .vector(floatVector)
+                    .certainty(0.5f)
                     .build());
         }
 
