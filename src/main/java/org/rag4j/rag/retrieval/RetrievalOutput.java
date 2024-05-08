@@ -1,6 +1,7 @@
 package org.rag4j.rag.retrieval;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
  */
 @Builder
 @Getter
+@EqualsAndHashCode
 public class RetrievalOutput {
     private List<RetrievalOutputItem> items;
 
