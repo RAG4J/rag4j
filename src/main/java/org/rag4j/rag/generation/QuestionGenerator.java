@@ -17,13 +17,15 @@ public class QuestionGenerator {
 
     public String generateQuestion(String text) {
         ChatPrompt chatPrompt = ChatPrompt.builder()
-                .systemMessage("You are a content writer reading a text and writing questions that are answered in that text. " +
-                        "Use the context as provided and nothing else to come up with one question. The question should " +
-                        "be a question that a person that does not know a lot about the context could ask. Do not use " +
-                        "names in your question or exact dates. Do not use the exact words in the context. Each question " +
-                        "must be one sentence only end always end with a '?' character. The context is provided after " +
-                        "'context:'. The result should only contain the generated question, nothing else.")
-                .userMessage("Context: %s%nGenerated question:")
+                .systemMessage("Read the provided text carefully. Extract facts from the text. Use the facts to " +
+                        "generate a question. Requirements for the question are: " +
+                        "\n- The question must be a question that can be answered by reading the text. " +
+                        "\n- Prevent using names or exact dates in the question. " +
+                        "\n- The question must be one sentence only. " +
+                        "\n- The question must end with a '?' character. " +
+                        "\n- Use different words than the ones in the text to form the question. " +
+                        "\n\nThe result should only contain the generated question, nothing else.")
+                .userMessage("provided text: %s%nGenerated question:")
                 .userParams(List.of(text))
                 .build();
 

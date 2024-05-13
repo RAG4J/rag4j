@@ -17,11 +17,7 @@ import org.rag4j.util.keyloader.KeyLoader;
  * question and context are hardcoded in this example.
  */
 public class AppAnswerGenerator {
-    public static void main(String[] args) {
-        KeyLoader keyLoader = new KeyLoader();
-        OpenAIClient openAIClient = OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey());
-
-        ChatService chatService = new OpenAIChatService(openAIClient);
+    public static void execute(ChatService chatService) {
         AnswerGenerator answerGenerator = new AnswerGenerator(chatService);
 
         String question = "Since when was the Vasa available for the public to visit?";
@@ -48,5 +44,12 @@ public class AppAnswerGenerator {
 
         System.out.printf("The quality of the answer in relation to the context is: %s%n", answerQuality.getAnswerFromContextQuality().getQuality());
         System.out.printf("The reasoning is: %s%n", answerQuality.getAnswerFromContextQuality().getReason());
+    }
+    public static void main(String[] args) {
+        KeyLoader keyLoader = new KeyLoader();
+        OpenAIClient openAIClient = OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey());
+
+        ChatService chatService = new OpenAIChatService(openAIClient);
+        execute(chatService);
     }
 }
