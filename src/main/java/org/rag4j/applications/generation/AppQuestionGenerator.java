@@ -20,11 +20,7 @@ import org.rag4j.util.keyloader.KeyLoader;
  */
 public class AppQuestionGenerator {
 
-    public static void main(String[] args) {
-        KeyLoader keyLoader = new KeyLoader();
-        OpenAIClient openAIClient = OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey());
-        Embedder embedder = new OpenAIEmbedder(openAIClient);
-
+    public static void execute(Embedder embedder,ChatService chatService) {
         // Index a document into the content store
         InputDocument inputDocument = InputDocument.builder()
                 .documentId("vasa")
@@ -38,7 +34,6 @@ public class AppQuestionGenerator {
 
         // Generate questions for the indexed chunk, as we have just one, by looping over them and collecting the
         // questions using the processor.
-        ChatService chatService = new OpenAIChatService(OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey()));
         QuestionGenerator questionGenerator = new QuestionGenerator(chatService);
         QuestionGeneratorService questionGeneratorService = new QuestionGeneratorService(contentStore, questionGenerator);
         QuestionCollectorProcessor questionCollectorProcessor = new QuestionCollectorProcessor(questionGeneratorService);
@@ -52,5 +47,15 @@ public class AppQuestionGenerator {
             System.out.printf("Document id: %s%n", questionAnswerRecord.getDocumentId());
             System.out.println();
         });
+
+    }
+
+    public static void main(String[] args) {
+        KeyLoader keyLoader = new KeyLoader();
+        OpenAIClient openAIClient = OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey());
+        Embedder embedder = new OpenAIEmbedder(openAIClient);
+        ChatService chatService = new OpenAIChatService(OpenAIFactory.obtainsClient(keyLoader.getOpenAIKey()));
+
+        execute(embedder,chatService);
     }
 }
