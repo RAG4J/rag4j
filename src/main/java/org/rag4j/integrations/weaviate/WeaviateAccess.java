@@ -22,7 +22,11 @@ public class WeaviateAccess {
     private final WeaviateClient client;
 
     public WeaviateAccess(KeyLoader keyLoader) {
-        Config config = new Config("https", keyLoader.getWeaviateURL());
+        String weaviateURL = keyLoader.getWeaviateURL();
+        if (weaviateURL.startsWith("https://")) {
+            weaviateURL = weaviateURL.substring(8);
+        }
+        Config config = new Config("https", weaviateURL);
         try {
             this.client = WeaviateAuthClient.apiKey(config, keyLoader.getWeaviateAPIKey());
             LOGGER.info("Connected to Weaviate host: {}", keyLoader.getWeaviateURL());
