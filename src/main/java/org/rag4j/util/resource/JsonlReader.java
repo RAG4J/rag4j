@@ -1,6 +1,7 @@
 package org.rag4j.util.resource;
 
 import lombok.Getter;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 
@@ -41,7 +42,11 @@ public class JsonlReader {
                 // Add each property to the map
                 Map<String,String> lineMap = new HashMap<>();
                 for (String property : properties) {
-                    lineMap.put(property, obj.getString(property));
+                    if (obj.get(property) instanceof JSONArray) {
+                        lineMap.put(property, obj.getJSONArray(property).join(", "));
+                    } else {
+                        lineMap.put(property, obj.getString(property));
+                    }
                 }
 
                 lines.add(lineMap);
