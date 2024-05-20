@@ -1,1 +1,0 @@
-Answer: %s%nContext: %s%nResult:%n
