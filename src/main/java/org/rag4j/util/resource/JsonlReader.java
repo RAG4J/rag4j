@@ -43,7 +43,11 @@ public class JsonlReader {
                 Map<String,String> lineMap = new HashMap<>();
                 for (String property : properties) {
                     if (obj.get(property) instanceof JSONArray) {
-                        lineMap.put(property, obj.getJSONArray(property).join(", "));
+                        List<String> values = new ArrayList<>();
+                        for (int i = 0; i < obj.getJSONArray(property).length(); i++) {
+                            values.add(obj.getJSONArray(property).getString(i));
+                        }
+                        lineMap.put(property, String.join(", ", values));
                     } else {
                         lineMap.put(property, obj.getString(property));
                     }
