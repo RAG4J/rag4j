@@ -19,6 +19,7 @@ import org.rag4j.rag.retrieval.ChunkProcessor;
 import org.rag4j.rag.retrieval.Retriever;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.rag4j.integrations.weaviate.WeaviateContants.CLASS_NAME;
@@ -65,6 +66,7 @@ public class WeaviateRetriever implements Retriever {
         if (useHybrid) {
             get.withHybrid(HybridArgument.builder()
                     .query(question)
+                    .properties(fieldsToRetrieve.toArray(new String[0]))
                     .vector(floatVector)
                     .alpha(0.5f)
                     .fusionType(FusionType.RANKED)

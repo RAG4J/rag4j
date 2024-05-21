@@ -8,8 +8,10 @@ import org.rag4j.integrations.ollama.OllamaChatService;
 import org.rag4j.integrations.ollama.OllamaEmbedder;
 import org.rag4j.rag.embedding.Embedder;
 import org.rag4j.rag.generation.AnswerGenerator;
+import org.rag4j.rag.model.RelevantChunk;
 import org.rag4j.rag.retrieval.RetrievalOutput;
 import org.rag4j.rag.retrieval.strategies.DocumentRetrievalStrategy;
+import org.rag4j.rag.retrieval.strategies.TopNRetrievalStrategy;
 import org.rag4j.rag.retrieval.strategies.WindowRetrievalStrategy;
 import org.rag4j.rag.store.local.InternalContentStore;
 
@@ -55,19 +57,27 @@ public class AppDocumentRetrievalStrategy {
                 .build();
         contentStore.store(splitter.split(inputDocument));
 
-        // Setup the retrieval part with two different retrieval strategies, use Ollama as LLM
-        DocumentRetrievalStrategy documentRetrievalStrategy = new DocumentRetrievalStrategy(contentStore);
-        WindowRetrievalStrategy windowRetrievalStrategy = new WindowRetrievalStrategy(contentStore, 2);
+        // Find the most relevant chunk for the question
+        List<RelevantChunk> relevantChunks = contentStore.findRelevantChunks(
+                "Who is presenting a workshop about question-answer systems?", 1);
+        System.out.println("Most relevant chunk for the question: " + relevantChunks.getFirst().getText());
+
+//        String question = "Who is talking about RAG based systems?";
+
+        String question = "What features do Large Language Model have?";
+
         AnswerGenerator answerGenerator = new AnswerGenerator(new OllamaChatService(ollamaAccess));
 
-        // Ask the question and generate the answer using two different retrieval strategies
-        String question = "Who is talking about RAG based systems?";
+        TopNRetrievalStrategy topNRetrievalStrategy = new TopNRetrievalStrategy(contentStore);
+        RetrievalOutput topNRetrieved = topNRetrievalStrategy.retrieve(question, 1);
+        generateAnswer(question, topNRetrieved, answerGenerator);
 
+        WindowRetrievalStrategy windowRetrievalStrategy = new WindowRetrievalStrategy(contentStore, 2);
         RetrievalOutput windowRetrieved = windowRetrievalStrategy.retrieve(question, 1);
         generateAnswer(question, windowRetrieved, answerGenerator);
 
+        DocumentRetrievalStrategy documentRetrievalStrategy = new DocumentRetrievalStrategy(contentStore);
         RetrievalOutput documentRetrieved = documentRetrievalStrategy.retrieve(question, 1);
         generateAnswer(question, documentRetrieved, answerGenerator);
-
     }
 }
