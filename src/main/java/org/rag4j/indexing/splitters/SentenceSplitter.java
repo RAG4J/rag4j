@@ -16,16 +16,21 @@ import java.util.List;
  * need a better one that knows how to distill a title using spaces or enters for instance.
  */
 public class SentenceSplitter implements Splitter {
-    public List<Chunk> split(InputDocument inputDocument) {
-        String text = inputDocument.getText();
+
+    @Override
+    public List<Chunk> split(InputDocument inputDocument, Chunk parentChunk) {
+        String textToSplit = parentChunk != null ? parentChunk.getText() : inputDocument.getText();
         SentenceDetectorME sentenceDetector = createSentenceDetector();
-        String[] sentences = sentenceDetector.sentDetect(text);
+        String[] sentences = sentenceDetector.sentDetect(textToSplit);
 
         List<Chunk> chunks = new ArrayList<>();
         for (int i = 0; i < sentences.length; i++) {
+            String chunkSizeStr = String.valueOf(i);
+            String chunkId = parentChunk != null ? parentChunk.getChunkId() + "_" + chunkSizeStr : chunkSizeStr;
+
             chunks.add(Chunk.builder()
                     .documentId(inputDocument.getDocumentId())
-                    .chunkId(i)
+                    .chunkId(chunkId)
                     .totalChunks(sentences.length)
                     .text(sentences[i])
                     .properties(inputDocument.getProperties())

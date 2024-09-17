@@ -15,7 +15,7 @@ import java.util.Map;
 @EqualsAndHashCode
 public class Chunk {
     private String documentId;
-    private int chunkId;
+    private String chunkId;
     private int totalChunks;
     private String text;
     private Map<String,Object> properties;

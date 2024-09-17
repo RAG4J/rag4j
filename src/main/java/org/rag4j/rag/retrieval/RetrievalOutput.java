@@ -20,7 +20,7 @@ public class RetrievalOutput {
     @EqualsAndHashCode
     public static class RetrievalOutputItem {
         private String documentId;
-        private int chunkId;
+        private String chunkId;
         private String text;
     }
 

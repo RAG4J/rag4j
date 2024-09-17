@@ -33,7 +33,7 @@ public class ObservedRetriever implements Retriever {
     }
 
     @Override
-    public Chunk getChunk(String documentId, int chunkId) {
+    public Chunk getChunk(String documentId, String chunkId) {
         return retriever.getChunk(documentId, chunkId);
     }
 

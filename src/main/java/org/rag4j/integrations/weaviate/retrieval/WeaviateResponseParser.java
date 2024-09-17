@@ -39,7 +39,7 @@ public class WeaviateResponseParser {
 
     private static Chunk extractChunk(Map<String, Object> chunk) {
         String documentId = (String) chunk.get("documentId");
-        int chunkId = ((Double) chunk.get("chunkId")).intValue();
+        String chunkId = (String) chunk.get("chunkId");
         int totalChunks = ((Double) chunk.get("totalChunks")).intValue();
         String text = (String) chunk.get("text");
 

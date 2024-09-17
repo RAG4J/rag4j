@@ -60,14 +60,14 @@ public class WeaviateRetrieverTest {
 
         Chunk chunk1 = Chunk.builder()
                 .documentId("doc1")
-                .chunkId(0)
+                .chunkId("0")
                 .totalChunks(3)
                 .text("an answer")
                 .properties(Map.of())
                 .build();
         Chunk chunk2 = Chunk.builder()
                 .documentId("doc1")
-                .chunkId(2)
+                .chunkId("2")
                 .totalChunks(3)
                 .text("with a question")
                 .properties(Map.of())
@@ -80,8 +80,8 @@ public class WeaviateRetrieverTest {
 
         when(embedder.embed(question)).thenReturn(vector);
         GraphQLResponse response = GraphQLResponse.builder()
-                .data(Map.of("Get", Map.of("Chunk", List.of(Map.of("documentId", "doc1", "chunkId", 0d, "totalChunks", 3d, "text", "an answer","_additional",Map.of("distance",0.5d)),
-                        Map.of("documentId", "doc1", "chunkId", 2d, "totalChunks", 3d, "text", "with a question","_additional",Map.of("distance",0.45d))))))
+                .data(Map.of("Get", Map.of("Chunk", List.of(Map.of("documentId", "doc1", "chunkId", "0", "totalChunks", 3d, "text", "an answer","_additional",Map.of("distance",0.5d)),
+                        Map.of("documentId", "doc1", "chunkId", "2", "totalChunks", 3d, "text", "with a question","_additional",Map.of("distance",0.45d))))))
                 .build();
 
         when(mockResponse.getResult()).thenReturn(response);

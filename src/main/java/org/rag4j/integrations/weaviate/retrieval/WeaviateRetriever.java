@@ -90,7 +90,7 @@ public class WeaviateRetriever implements Retriever {
     }
 
     @Override
-    public Chunk getChunk(String documentId, int chunkId) {
+    public Chunk getChunk(String documentId, String chunkId) {
 
         Result<GraphQLResponse> result = weaviateAccess.getClient().graphQL().get()
                 .withClassName(CLASS_NAME)
@@ -107,7 +107,7 @@ public class WeaviateRetriever implements Retriever {
                                         WhereFilter.builder()
                                                 .path("chunkId")
                                                 .operator(Operator.Equal)
-                                                .valueInt(chunkId)
+                                                .valueString(chunkId)
                                                 .build()
                                 )
                                 .build())

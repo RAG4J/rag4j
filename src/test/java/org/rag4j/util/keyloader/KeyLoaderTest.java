@@ -49,6 +49,7 @@ public class KeyLoaderTest {
     @Test
     @DisplayName("Should throw KeyLoaderException when properties file is not available")
     public void shouldThrowKeyLoaderExceptionWhenPropertiesFileNotAvailable() throws IOException, InterruptedException {
+        //noinspection unchecked
         when(client.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class))).thenThrow(IOException.class);
 
         KeyLoader keyLoader =

@@ -18,7 +18,7 @@ public class RAGObserver {
     /**
      * Map of window to chunkIds. Window is the documentChunkId of the relevant chunk in the window.
      */
-    private Map<String, List<Integer>> windowToChunkIds = new HashMap<>();
+    private Map<String, List<String>> windowToChunkIds = new HashMap<>();
 
     /**
      * Map of window to text. Window is the documentChunkId of the relevant chunk in the window.
@@ -45,7 +45,7 @@ public class RAGObserver {
      * @param window The documentChunkId of the relevant chunk in the window.
      * @param chunkIds The chunkIds around the relevant chunks in the window.
      */
-    public void addWindowToChunkIds(String window, List<Integer> chunkIds) {
+    public void addWindowToChunkIds(String window, List<String> chunkIds) {
         windowToChunkIds.put(window, chunkIds);
     }
 

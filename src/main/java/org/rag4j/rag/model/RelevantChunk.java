@@ -13,7 +13,7 @@ import java.util.Map;
 public class RelevantChunk extends Chunk {
     private final double score;
 
-    public RelevantChunk(String documentId, int chunkId, int totalChunks, double score, String text,
+    public RelevantChunk(String documentId, String chunkId, int totalChunks, double score, String text,
                          Map<String,Object> properties) {
         super(documentId, chunkId, totalChunks, text, properties);
         this.score = score;

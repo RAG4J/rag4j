@@ -22,9 +22,9 @@ class ObservedRetrieverTest {
     @Test
     public void testFindRelevantChunks() {
         when(retriever.findRelevantChunks("just a question", 3)).thenReturn(List.of(
-                new RelevantChunk("doc1", 1, 11, 0.9, "just an answer", Map.of()),
-                new RelevantChunk("doc1", 6, 11,0.85,"just an answer", Map.of()),
-                new RelevantChunk("doc2", 11, 17,0.55, "just an answer", Map.of())));
+                new RelevantChunk("doc1", "1", 11, 0.9, "just an answer", Map.of()),
+                new RelevantChunk("doc1", "6", 11,0.85,"just an answer", Map.of()),
+                new RelevantChunk("doc2", "11", 17,0.55, "just an answer", Map.of())));
 
 
         ObservedRetriever observedRetriever = new ObservedRetriever(retriever);

@@ -60,7 +60,7 @@ public class InternalContentStore implements ContentStore, Retriever {
     }
 
     @Override
-    public Chunk getChunk(String documentId, int chunkId) {
+    public Chunk getChunk(String documentId, String chunkId) {
         return this.dataStore.get(extractKey(documentId, chunkId));
     }
 
@@ -73,7 +73,7 @@ public class InternalContentStore implements ContentStore, Retriever {
         return vector.stream().mapToDouble(Float::doubleValue).toArray();
     }
 
-    private static String extractKey(String documentId, int chunkId) {
+    private static String extractKey(String documentId, String chunkId) {
         return String.format("%s_%s", documentId, chunkId);
     }
 }

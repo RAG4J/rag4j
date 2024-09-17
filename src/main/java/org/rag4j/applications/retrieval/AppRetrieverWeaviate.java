@@ -34,15 +34,15 @@ public class AppRetrieverWeaviate {
         System.out.println("-----------------");
 
         // Use the components - Get a specific chunk
-        Chunk chunk = retriever.getChunk("the-perfect-scapegoat", 0);
-        System.out.printf("Document: %s - %d%n", chunk.getDocumentId(), chunk.getChunkId());
+        Chunk chunk = retriever.getChunk("the-perfect-scapegoat", "0");
+        System.out.printf("Document: %s - %s%n", chunk.getDocumentId(), chunk.getChunkId());
 
         // Use the components - Find relevant chunks
         List<RelevantChunk> relevantChunks = retriever.findRelevantChunks("How many bolts were replaced?", 4);
         System.out.printf("Found %d relevant chunks%n", relevantChunks.size());
 
         for (RelevantChunk relevantChunk : relevantChunks) {
-            System.out.printf("Document: %s - %d%n", relevantChunk.getDocumentId(), relevantChunk.getChunkId());
+            System.out.printf("Document: %s - %s%n", relevantChunk.getDocumentId(), relevantChunk.getChunkId());
             System.out.printf("Title: %s%n", relevantChunk.getProperties().get("title"));
             System.out.println(relevantChunk.getText());
             System.out.println("-----------------");

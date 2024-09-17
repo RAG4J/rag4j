@@ -7,6 +7,7 @@ import org.rag4j.rag.retrieval.RetrievalOutput;
 import org.rag4j.rag.retrieval.RetrievalStrategy;
 import org.rag4j.rag.retrieval.Retriever;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +57,7 @@ public class DocumentRetrievalStrategy implements RetrievalStrategy {
     }
 
     private RetrievalOutput.RetrievalOutputItem getDocumentChunksByRelevantChunk(RelevantChunk relevantChunk) {
-        int[] chunkIds = createChunkArrayForDocument(relevantChunk.getTotalChunks());
+        List<String> chunkIds = createChunkArrayForDocument(relevantChunk.getTotalChunks());
         StringBuilder text = new StringBuilder(combineChunksTexts(relevantChunk, chunkIds));
 
         for (Map.Entry<String, Object> entry : relevantChunk.getProperties().entrySet()) {
@@ -70,17 +71,17 @@ public class DocumentRetrievalStrategy implements RetrievalStrategy {
                 .build();
     }
 
-    int[] createChunkArrayForDocument(int n) {
-        int[] array = new int[n];
+    List<String> createChunkArrayForDocument(int n) {
+        List<String> chunkIds = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            array[i] = i;
+            chunkIds.add(String.valueOf(i));
         }
-        return array;
+        return chunkIds;
     }
 
-    private String combineChunksTexts(RelevantChunk relevantChunk, int[] chunkIds) {
-        return Arrays.stream(chunkIds)
-                .mapToObj(chunkId -> retriever.getChunk(relevantChunk.getDocumentId(), chunkId))
+    private String combineChunksTexts(RelevantChunk relevantChunk, List<String> chunkIds) {
+        return chunkIds.stream()
+                .map(chunkId -> retriever.getChunk(relevantChunk.getDocumentId(), chunkId))
                 .map(Chunk::getText)
                 .collect(Collectors.joining(" "));
     }

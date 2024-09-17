@@ -15,7 +15,7 @@ import lombok.Getter;
 @Builder
 public class QuestionAnswerRecord {
     private String documentId;
-    private Integer chunkId;
+    private String chunkId;
     private String text;
     private String question;
 }
