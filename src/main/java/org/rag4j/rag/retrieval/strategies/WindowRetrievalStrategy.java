@@ -8,6 +8,7 @@ import org.rag4j.rag.tracker.RAGObserver;
 import org.rag4j.rag.model.Chunk;
 import org.rag4j.rag.tracker.RAGTracker;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,13 +67,13 @@ public class WindowRetrievalStrategy implements RetrievalStrategy {
     }
 
     private RetrievalOutput.RetrievalOutputItem getWindowChunksByRelevantChunk(RelevantChunk relevantChunk, boolean observe) {
-        int[] chunkIds = getChunkIds(relevantChunk.getChunkId(), windowSize, relevantChunk.getTotalChunks());
+        List<String> chunkIds = getChunkIds(relevantChunk.getChunkId(), windowSize, relevantChunk.getTotalChunks());
         String text = combineChunksTexts(relevantChunk, chunkIds);
 
         if (observe) {
             RAGTracker.addWindowToChunkIds(
                     relevantChunk.getDocumentChunkId(),
-                    Arrays.stream(chunkIds).boxed().collect(Collectors.toList())
+                    chunkIds
             );
             RAGTracker.addWindowText(relevantChunk.getDocumentChunkId(), text);
         }
@@ -83,9 +84,9 @@ public class WindowRetrievalStrategy implements RetrievalStrategy {
                 .build();
     }
 
-    private String combineChunksTexts(RelevantChunk relevantChunk, int[] chunkIds) {
-        return Arrays.stream(chunkIds)
-                .mapToObj(chunkId -> retriever.getChunk(relevantChunk.getDocumentId(), chunkId))
+    private String combineChunksTexts(RelevantChunk relevantChunk, List<String> chunkIds) {
+        return chunkIds.stream()
+                .map(chunkId -> retriever.getChunk(relevantChunk.getDocumentId(), chunkId))
                 .map(Chunk::getText)
                 .collect(Collectors.joining(" "));
     }
@@ -99,16 +100,20 @@ public class WindowRetrievalStrategy implements RetrievalStrategy {
      * @param numberOfChunks The total number of chunks in the document
      * @return An array of chunkIds
      */
-    static int[] getChunkIds(int chunkId, int windowSize, int numberOfChunks) {
+    static List<String> getChunkIds(String chunkId, int windowSize, int numberOfChunks) {
+        // The chunkId has the format 0 or 0_0, we need to extract the last part
+        String[] parts = chunkId.split("_");
+        String lastPart = parts[parts.length - 1];
+        int subChunkId = Integer.parseInt(lastPart);
 
         // Calculate the start and end of the window
-        int start = Math.max(0, chunkId - windowSize);
-        int end = Math.min(numberOfChunks-1, chunkId + windowSize);
+        int start = Math.max(0, subChunkId - windowSize);
+        int end = Math.min(numberOfChunks-1, subChunkId + windowSize);
 
-        // Generate the array of chunkIds
-        int[] chunkIds = new int[end - start + 1];
-        for (int i = 0; i < chunkIds.length; i++) {
-            chunkIds[i] = start + i;
+        // Generate the list of chunkIds
+        List<String> chunkIds = new ArrayList<>();
+        for (int i = start; i <= end; i++) {
+            chunkIds.add(String.valueOf(i));
         }
 
         return chunkIds;

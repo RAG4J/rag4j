@@ -21,7 +21,7 @@ public class RAGTracker {
         ragObserverThreadLocal.get().addRelevantChunk(documentChunkId, text);
     }
 
-    public static void addWindowToChunkIds(String window, List<Integer> chunkIds) {
+    public static void addWindowToChunkIds(String window, List<String> chunkIds) {
         ragObserverThreadLocal.get().addWindowToChunkIds(window, chunkIds);
     }
 

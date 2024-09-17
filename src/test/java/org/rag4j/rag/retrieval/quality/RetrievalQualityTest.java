@@ -37,11 +37,11 @@ public class RetrievalQualityTest {
     @Test
     public void obtainRetrievalQualityReturnsCorrectQuality() {
         List<QuestionAnswerRecord> questionAnswerRecords = new ArrayList<>();
-        questionAnswerRecords.add(new QuestionAnswerRecord("doc1", 1, "text", "question"));
+        questionAnswerRecords.add(new QuestionAnswerRecord("doc1", "1", "text", "question"));
 
         RelevantChunk relevantChunk = new RelevantChunk(Chunk.builder()
                 .documentId("doc1")
-                .chunkId(1)
+                .chunkId("1")
                 .totalChunks(3)
                 .text("text")
                 .properties(Map.of())
@@ -57,9 +57,9 @@ public class RetrievalQualityTest {
     @Test
     public void obtainRetrievalQualityReturnsIncorrectQuality() {
         List<QuestionAnswerRecord> questionAnswerRecords = new ArrayList<>();
-        questionAnswerRecords.add(new QuestionAnswerRecord("doc1", 1, "text", "question"));
+        questionAnswerRecords.add(new QuestionAnswerRecord("doc1", "1", "text", "question"));
 
-        RelevantChunk relevantChunk = new RelevantChunk("doc2", 2, 3, 1.0,"text", Map.of());
+        RelevantChunk relevantChunk = new RelevantChunk("doc2", "2", 3, 1.0,"text", Map.of());
         when(retriever.findRelevantChunks(anyString(), any(List.class), anyInt())).thenReturn(List.of(relevantChunk));
 
         RetrievalQuality retrievalQuality = retrievalQualityService.obtainRetrievalQuality(questionAnswerRecords, embedder);

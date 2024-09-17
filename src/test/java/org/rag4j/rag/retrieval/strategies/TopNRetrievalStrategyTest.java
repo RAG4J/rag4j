@@ -30,11 +30,11 @@ public class TopNRetrievalStrategyTest {
     @Test
     public void testRetrieveBasicFlow() {
         when(retriever.findRelevantChunks("just a question", 5)).thenReturn(List.of(
-                new RelevantChunk("doc1", 1, 1, 0.9, "just an answer", Map.of()),
-                new RelevantChunk("doc1", 2, 1,0.85,"just an answer", Map.of()),
-                new RelevantChunk("doc3", 1, 1,0.7, "just an answer", Map.of()),
-                new RelevantChunk("doc7", 1, 1,0.6, "just an answer", Map.of()),
-                new RelevantChunk("doc2", 1, 1,0.55, "just an answer", Map.of())));
+                new RelevantChunk("doc1", "1", 1, 0.9, "just an answer", Map.of()),
+                new RelevantChunk("doc1", "2", 1,0.85,"just an answer", Map.of()),
+                new RelevantChunk("doc3", "1", 1,0.7, "just an answer", Map.of()),
+                new RelevantChunk("doc7", "1", 1,0.6, "just an answer", Map.of()),
+                new RelevantChunk("doc2", "1", 1,0.55, "just an answer", Map.of())));
 
         RetrievalOutput retrievalOutput = strategy.retrieve("just a question", 5);
 
@@ -44,10 +44,10 @@ public class TopNRetrievalStrategyTest {
     @Test
     public void testRetrieveBasicFlow_DefaultN() {
         when(retriever.findRelevantChunks("just a question", 4)).thenReturn(List.of(
-                new RelevantChunk("doc1", 1, 1, 0.9, "just an answer", Map.of()),
-                new RelevantChunk("doc1", 2, 1,0.85,"just an answer", Map.of()),
-                new RelevantChunk("doc3", 1, 1,0.7, "just an answer", Map.of()),
-                new RelevantChunk("doc2", 1, 1,0.55, "just an answer", Map.of())));
+                new RelevantChunk("doc1", "1", 1, 0.9, "just an answer", Map.of()),
+                new RelevantChunk("doc1", "2", 1,0.85,"just an answer", Map.of()),
+                new RelevantChunk("doc3", "1", 1,0.7, "just an answer", Map.of()),
+                new RelevantChunk("doc2", "1", 1,0.55, "just an answer", Map.of())));
 
         RetrievalOutput retrievalOutput = strategy.retrieve("just a question", 4);
 

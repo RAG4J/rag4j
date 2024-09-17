@@ -28,11 +28,11 @@ public class WindowRetrievalStrategyTest {
         WindowRetrievalStrategy strategy = new WindowRetrievalStrategy(retriever, 2);
 
         when(retriever.findRelevantChunks("just a question", 3)).thenReturn(List.of(
-                new RelevantChunk("doc1", 1, 11, 0.9, "just an answer", Map.of()),
-                new RelevantChunk("doc1", 6, 11, 0.85, "just an answer", Map.of()),
-                new RelevantChunk("doc2", 11, 17, 0.55, "just an answer", Map.of())));
+                new RelevantChunk("doc1", "1", 11, 0.9, "just an answer", Map.of()),
+                new RelevantChunk("doc1", "6", 11, 0.85, "just an answer", Map.of()),
+                new RelevantChunk("doc2", "11", 17, 0.55, "just an answer", Map.of())));
 
-        when(retriever.getChunk(anyString(), anyInt())).thenReturn(
+        when(retriever.getChunk(anyString(), anyString())).thenReturn(
                 newChunk("doc1", 0, 11, "chunk 0", Map.of()),
                 newChunk("doc1", 1, 11, "just an answer", Map.of()),
                 newChunk("doc1", 2, 11, "chunk 2", Map.of()),
@@ -62,27 +62,27 @@ public class WindowRetrievalStrategyTest {
 
         // Verify that all when actions are called exactly once
         verify(retriever, times(1)).findRelevantChunks("just a question", 3);
-        verify(retriever, times(1)).getChunk("doc1", 0);
-        verify(retriever, times(1)).getChunk("doc1", 1);
-        verify(retriever, times(1)).getChunk("doc1", 2);
-        verify(retriever, times(1)).getChunk("doc1", 3);
-        verify(retriever, times(1)).getChunk("doc1", 4);
-        verify(retriever, times(1)).getChunk("doc1", 5);
-        verify(retriever, times(1)).getChunk("doc1", 6);
-        verify(retriever, times(1)).getChunk("doc1", 7);
-        verify(retriever, times(1)).getChunk("doc1", 8);
-        verify(retriever, times(1)).getChunk("doc2", 9);
-        verify(retriever, times(1)).getChunk("doc2", 10);
-        verify(retriever, times(1)).getChunk("doc2", 11);
-        verify(retriever, times(1)).getChunk("doc2", 12);
-        verify(retriever, times(1)).getChunk("doc2", 13);
+        verify(retriever, times(1)).getChunk("doc1", "0");
+        verify(retriever, times(1)).getChunk("doc1", "1");
+        verify(retriever, times(1)).getChunk("doc1", "2");
+        verify(retriever, times(1)).getChunk("doc1", "3");
+        verify(retriever, times(1)).getChunk("doc1", "4");
+        verify(retriever, times(1)).getChunk("doc1", "5");
+        verify(retriever, times(1)).getChunk("doc1", "6");
+        verify(retriever, times(1)).getChunk("doc1", "7");
+        verify(retriever, times(1)).getChunk("doc1", "8");
+        verify(retriever, times(1)).getChunk("doc2", "9");
+        verify(retriever, times(1)).getChunk("doc2", "10");
+        verify(retriever, times(1)).getChunk("doc2", "11");
+        verify(retriever, times(1)).getChunk("doc2", "12");
+        verify(retriever, times(1)).getChunk("doc2", "13");
 
     }
 
     private Chunk newChunk(String docId, int chunkId, int totalChunks, String text, Map<String, Object> properties) {
         return Chunk.builder()
                 .documentId(docId)
-                .chunkId(chunkId)
+                .chunkId(String.valueOf(chunkId))
                 .totalChunks(totalChunks)
                 .text(text)
                 .properties(properties)
@@ -94,11 +94,11 @@ public class WindowRetrievalStrategyTest {
         WindowRetrievalStrategy strategy = new WindowRetrievalStrategy(retriever, 1);
 
         when(retriever.findRelevantChunks("just a question", 2)).thenReturn(List.of(
-                new RelevantChunk("doc1", 1, 11, 0.9, "just an answer", Map.of()),
-                new RelevantChunk("doc2", 6, 9, 0.85, "another one", Map.of()))
+                new RelevantChunk("doc1", "1", 11, 0.9, "just an answer", Map.of()),
+                new RelevantChunk("doc2", "6", 9, 0.85, "another one", Map.of()))
         );
 
-        when(retriever.getChunk(anyString(), anyInt())).thenReturn(
+        when(retriever.getChunk(anyString(), anyString())).thenReturn(
                 newChunk("doc1", 0, 11, "chunk 0", Map.of()),
                 newChunk("doc1", 1, 11, "just an answer", Map.of()),
                 newChunk("doc1", 2, 11, "chunk 2", Map.of()),
@@ -117,12 +117,12 @@ public class WindowRetrievalStrategyTest {
 
         // Verify that all when actions are called exactly once
         verify(retriever, times(1)).findRelevantChunks("just a question", 2);
-        verify(retriever, times(1)).getChunk("doc1", 0);
-        verify(retriever, times(1)).getChunk("doc1", 1);
-        verify(retriever, times(1)).getChunk("doc1", 2);
-        verify(retriever, times(1)).getChunk("doc2", 5);
-        verify(retriever, times(1)).getChunk("doc2", 6);
-        verify(retriever, times(1)).getChunk("doc2", 7);
+        verify(retriever, times(1)).getChunk("doc1", "0");
+        verify(retriever, times(1)).getChunk("doc1", "1");
+        verify(retriever, times(1)).getChunk("doc1", "2");
+        verify(retriever, times(1)).getChunk("doc2", "5");
+        verify(retriever, times(1)).getChunk("doc2", "6");
+        verify(retriever, times(1)).getChunk("doc2", "7");
 
 
         RAGObserver observer = RAGTracker.getRAGObserver();
@@ -131,14 +131,14 @@ public class WindowRetrievalStrategyTest {
         assertEquals(2, observer.getWindowToChunkIds().size());
 
         assertEquals(3, observer.getWindowToChunkIds().get("doc1_1").size());
-        assertEquals(0, observer.getWindowToChunkIds().get("doc1_1").get(0));
-        assertEquals(1, observer.getWindowToChunkIds().get("doc1_1").get(1));
-        assertEquals(2, observer.getWindowToChunkIds().get("doc1_1").get(2));
+        assertEquals("0", observer.getWindowToChunkIds().get("doc1_1").get(0));
+        assertEquals("1", observer.getWindowToChunkIds().get("doc1_1").get(1));
+        assertEquals("2", observer.getWindowToChunkIds().get("doc1_1").get(2));
 
         assertEquals(3, observer.getWindowToChunkIds().get("doc2_6").size());
-        assertEquals(5, observer.getWindowToChunkIds().get("doc2_6").get(0));
-        assertEquals(6, observer.getWindowToChunkIds().get("doc2_6").get(1));
-        assertEquals(7, observer.getWindowToChunkIds().get("doc2_6").get(2));
+        assertEquals("5", observer.getWindowToChunkIds().get("doc2_6").get(0));
+        assertEquals("6", observer.getWindowToChunkIds().get("doc2_6").get(1));
+        assertEquals("7", observer.getWindowToChunkIds().get("doc2_6").get(2));
 
         assertEquals("chunk 0 just an answer chunk 2", observer.getWindowTexts().get("doc1_1"));
         assertEquals("chunk 5 another one chunk 7", observer.getWindowTexts().get("doc2_6"));
@@ -147,34 +147,34 @@ public class WindowRetrievalStrategyTest {
 
     @Test
     public void testGetChunkIds() {
+        // TODO FIX THIS TEST, cannot compare Lists this way
         // A Normal scenario
-        assertArrayEquals(
-                new int[]{3, 4, 5, 6, 7},
-                WindowRetrievalStrategy.getChunkIds(5, 2, 10)
+        assertEquals(
+                List.of("3", "4", "5", "6", "7"),
+                WindowRetrievalStrategy.getChunkIds("5", 2, 10)
         );
 
         // A scenario where the window cannot be taken from the beginning
-        assertArrayEquals(
-                new int[]{0, 1, 2, 3},
-                WindowRetrievalStrategy.getChunkIds(1, 2, 10)
+        assertEquals(
+                List.of("0", "1", "2", "3"),
+                WindowRetrievalStrategy.getChunkIds("1", 2, 10)
         );
 
         // A scenario where the window cannot be taken from the end
-        assertArrayEquals(
-                new int[]{7, 8, 9},
-                WindowRetrievalStrategy.getChunkIds(9, 2, 10)
+        assertEquals(
+                List.of("7", "8", "9"),
+                WindowRetrievalStrategy.getChunkIds("9", 2, 10)
         );
 
         // A scenario where the window is 0
-        assertArrayEquals(
-                new int[]{5},
-                WindowRetrievalStrategy.getChunkIds(5, 0, 7)
+        assertEquals(
+                List.of("5"),
+                WindowRetrievalStrategy.getChunkIds("5", 0, 7)
         );
 
-        assertArrayEquals(
-                new int[]{0, 1},
-                WindowRetrievalStrategy.getChunkIds(1, 1, 2)
+        assertEquals(
+                List.of("0", "1"),
+                WindowRetrievalStrategy.getChunkIds("1", 1, 2)
         );
-
     }
 }

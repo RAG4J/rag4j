@@ -28,21 +28,25 @@ public class MaxTokenSplitter implements Splitter {
     }
 
     @Override
-    public List<Chunk> split(InputDocument inputDocument) {
-        List<Integer> tokens = this.encoding.encode(inputDocument.getText()).boxed();
+    public List<Chunk> split(InputDocument inputDocument, Chunk parentChunk) {
+        String textToSplit = parentChunk != null ? parentChunk.getText() : inputDocument.getText();
+
+        List<Integer> tokens = this.encoding.encode(textToSplit).boxed();
         List<Chunk> chunks = new ArrayList<>();
 
-        int numChunks =  (tokens.size() / maxTokens) + (tokens.size() % maxTokens == 0 ? 0 : 1);
+        int numChunks = (tokens.size() / maxTokens) + (tokens.size() % maxTokens == 0 ? 0 : 1);
 
         while (!tokens.isEmpty()) {
             int chunkSize = Math.min(tokens.size(), this.maxTokens);
             List<Integer> chunkTokens = tokens.subList(0, chunkSize);
             tokens = tokens.subList(chunkSize, tokens.size());
+            String chunkSizeStr = String.valueOf(chunks.size());
+            String chunkId = parentChunk != null ? parentChunk.getChunkId() + "_" + chunkSizeStr : chunkSizeStr;
 
             String chunkText = this.encoding.decode(toIntArray(chunkTokens));
             Chunk chunk = Chunk.builder()
                     .documentId(inputDocument.getDocumentId())
-                    .chunkId(chunks.size())
+                    .chunkId(chunkId)
                     .totalChunks(numChunks)
                     .text(chunkText)
                     .properties(inputDocument.getProperties())

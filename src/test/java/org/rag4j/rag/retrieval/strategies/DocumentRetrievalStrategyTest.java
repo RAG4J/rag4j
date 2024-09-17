@@ -22,23 +22,23 @@ public class DocumentRetrievalStrategyTest {
     public void retrieveShouldReturnCorrectOutputForGivenQuestion() {
         Retriever retriever = Mockito.mock(Retriever.class);
         DocumentRetrievalStrategy strategy = new DocumentRetrievalStrategy(retriever);
-        RelevantChunk relevantChunk = new RelevantChunk("doc1", 0, 1, 1.0, "text text", Map.of("key1","value1"));
+        RelevantChunk relevantChunk = new RelevantChunk("doc1", "0", 1, 1.0, "text text", Map.of("key1","value1"));
         Chunk chunk = Chunk.builder().
                 documentId("doc1").
-                chunkId(0).
+                chunkId("0").
                 totalChunks(1).
                 text("text text").
                 properties(Map.of("key1","value1")).
                 build();
         when(retriever.findRelevantChunks("question", 1)).thenReturn(Collections.singletonList(relevantChunk));
-        when(retriever.getChunk("doc1", 0)).thenReturn(chunk);
-        when(retriever.getChunk("doc1", 1)).thenReturn(chunk);
+        when(retriever.getChunk("doc1", "0")).thenReturn(chunk);
+        when(retriever.getChunk("doc1", "1")).thenReturn(chunk);
 
         RetrievalOutput expected = RetrievalOutput.builder()
                 .items(Collections.singletonList(
                         RetrievalOutput.RetrievalOutputItem.builder()
                                 .documentId("doc1")
-                                .chunkId(0)
+                                .chunkId("0")
                                 .text("text text\nkey1: value1")
                                 .build()))
                 .build();
@@ -62,10 +62,10 @@ public class DocumentRetrievalStrategyTest {
     public void retrieveShouldReturnCorrectOutputForGivenQuestionAndVector() {
         Retriever retriever = Mockito.mock(Retriever.class);
         DocumentRetrievalStrategy strategy = new DocumentRetrievalStrategy(retriever);
-        RelevantChunk relevantChunk = new RelevantChunk("doc1", 0, 1, 1.0, "text text", Map.of());
+        RelevantChunk relevantChunk = new RelevantChunk("doc1", "0", 1, 1.0, "text text", Map.of());
         Chunk chunk = Chunk.builder().
                 documentId("doc1").
-                chunkId(0).
+                chunkId("0").
                 totalChunks(1).
                 text("text text").
                 properties(Map.of()).
@@ -73,14 +73,14 @@ public class DocumentRetrievalStrategyTest {
         List<Float> vector = Arrays.asList(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
                 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
         when(retriever.findRelevantChunks("question", vector, 1)).thenReturn(Collections.singletonList(relevantChunk));
-        when(retriever.getChunk("doc1", 0)).thenReturn(chunk);
-        when(retriever.getChunk("doc1", 1)).thenReturn(chunk);
+        when(retriever.getChunk("doc1", "0")).thenReturn(chunk);
+        when(retriever.getChunk("doc1", "1")).thenReturn(chunk);
 
         RetrievalOutput expected = RetrievalOutput.builder()
                 .items(Collections.singletonList(
                         RetrievalOutput.RetrievalOutputItem.builder()
                                 .documentId("doc1")
-                                .chunkId(0)
+                                .chunkId("0")
                                 .text("text text")
                                 .build()))
                 .build();

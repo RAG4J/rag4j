@@ -14,7 +14,7 @@ public interface Retriever {
     List<RelevantChunk> findRelevantChunks(String question, int maxResults);
     List<RelevantChunk> findRelevantChunks(String question, List<Float> vector, int maxResults);
 
-    Chunk getChunk(String documentId, int chunkId);
+    Chunk getChunk(String documentId, String chunkId);
 
     void loopOverChunks(ChunkProcessor chunkProcessor);
 }

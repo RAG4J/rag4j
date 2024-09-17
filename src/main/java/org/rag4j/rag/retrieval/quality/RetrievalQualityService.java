@@ -55,7 +55,7 @@ public class RetrievalQualityService {
             Iterable<CSVRecord> records = csvFormat.parse(reader);
             for (CSVRecord record : records) {
                 String documentId = record.get("document");
-                int chunkId = Integer.parseInt(record.get("chunk"));
+                String chunkId = record.get("chunk");
                 String text = record.get("text");
                 String question = record.get("question");
                 questionAnswerRecords.add(new QuestionAnswerRecord(documentId, chunkId, text, question));
