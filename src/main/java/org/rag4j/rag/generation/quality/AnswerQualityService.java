@@ -116,12 +116,12 @@ public class AnswerQualityService {
     // @formatter:off
     private static final String qualityOfAnswerFromContextSystemPrompt =
             "You are a quality assistant verifying retrieval augmented generation systems. Your task is to verify " +
-                "a generated answer against the provided context. Give the answer a score between 1 and 5 and keep " +
-                "the number as an integer. 5 means the answer contains only facts from the context. 1 means there is " +
-                "not match between the answer and the provided context at all. If the answer contains exact phrases " +
-                "from the context, the score should be lower as well. The answer provided after 'answer:'. The " +
-                "context after 'context:'. Write your answers in the format of score - reason. Keep the reason short " +
-                "as in maximum 2 sentences. An example: 3 - The answer is correct but some details are missing.";
+            "a generated answer against the provided context. Give the answer a score between 1 and 5 and keep " +
+            "the number as an integer. 5 means the answer contains only facts from the context. 1 means there is " +
+            "not match between the answer and the provided context at all. If the answer contains exact phrases " +
+            "from the context, the score should be lower as well. The answer provided after 'answer:'. The " +
+            "context after 'context:'. Write your answers in the format of score - reason. Keep the reason short " +
+            "as in maximum 2 sentences. An example: 3 - The answer is correct but some details are missing.";
 
     private static final String qualityOfAnswerToQuestionUserPrompt = "Question: %s%nAnswer: %s%nResult:%n";
     private static final String qualityOfAnswerFromContextUserPrompt = "Answer: %s%nContext: %s%nResult:%n";

@@ -21,4 +21,9 @@ public class OllamaChatService implements ChatService {
         String stringPrompt = String.format("%s\n\n%s",prompt.createSystemMessage(), prompt.createUserMessage());
         return this.ollama.generateAnswer(stringPrompt, this.model);
     }
+
+    @Override
+    public String askForJsonResponse(ChatPrompt prompt) {
+        return askForResponse(prompt);
+    }
 }
