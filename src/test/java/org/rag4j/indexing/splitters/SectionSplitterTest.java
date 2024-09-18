@@ -11,27 +11,28 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class MaxTokenSplitterTest {
-    private MaxTokenSplitter splitter;
+class SectionSplitterTest {
+    private SectionSplitter splitter;
 
     @BeforeEach
     void setUp() {
-        splitter = new MaxTokenSplitter(5);
+        splitter = new SectionSplitter();
     }
 
     @Test
-    void shouldSplitIntoChunksWhenInputDocumentIsNotEmpty() {
+    void shouldSplitIntoChunksWhenInputDocumentHasMultipleSections() {
         InputDocument inputDocument = InputDocument.builder()
                 .documentId("doc1")
-                .text("hello java programmer, how are you doing?")
+                .text("Section 1\n\nSection 2\n\nSection 3")
                 .properties(Map.of())
                 .build();
 
         List<Chunk> chunks = splitter.split(inputDocument);
 
-        assertEquals(2, chunks.size());
-        assertEquals("hello java programmer, how", chunks.get(0).getText());
-        assertEquals(" are you doing?", chunks.get(1).getText());
+        assertEquals(3, chunks.size());
+        assertEquals("Section 1", chunks.get(0).getText());
+        assertEquals("Section 2", chunks.get(1).getText());
+        assertEquals("Section 3", chunks.get(2).getText());
     }
 
     @Test
@@ -48,41 +49,39 @@ class MaxTokenSplitterTest {
     }
 
     @Test
-    void shouldReturnSingleChunkWhenInputDocumentIsLessThanMaxTokens() {
+    void shouldReturnSingleChunkWhenInputDocumentHasSingleSection() {
         InputDocument inputDocument = InputDocument.builder()
                 .documentId("doc1")
-                .text("Hallo Java programmeur, hoe gaat het met je?")
+                .text("Single section")
                 .properties(Map.of())
                 .build();
 
-        List<Chunk> chunks = splitter.split(inputDocument);
+        List<Chunk> chunks = splitter.split(inputDocument, null);
 
-        assertEquals(3, chunks.size());
-        assertEquals("Hallo Java programmeur,", chunks.get(0).getText());
-        assertEquals(" hoe gaat het met je", chunks.get(1).getText());
-        assertEquals("?", chunks.get(2).getText());
+        assertEquals(1, chunks.size());
+        assertEquals("Single section", chunks.get(0).getText());
     }
 
     @Test
     void shouldCreateChunkIdForParentChunk() {
         InputDocument inputDocument = InputDocument.builder()
                 .documentId("doc1")
-                .text("hello java programmer, how are you doing?")
+                .text("Section 1\n\nSection 2")
                 .properties(Map.of())
                 .build();
         Chunk parentChunk = Chunk.builder()
                 .documentId("doc1")
                 .chunkId("0")
                 .totalChunks(1)
-                .text("hello java programmer, how")
+                .text("Section 1\n\nSection 2")
                 .properties(Map.of())
                 .build();
 
         List<Chunk> chunks = splitter.split(inputDocument, parentChunk);
 
         assertEquals(2, chunks.size());
-        assertEquals("hello java programmer, how", chunks.get(0).getText());
-        assertEquals(" are you doing?", chunks.get(1).getText());
+        assertEquals("Section 1", chunks.get(0).getText());
+        assertEquals("Section 2", chunks.get(1).getText());
         assertEquals("0_0", chunks.get(0).getChunkId());
         assertEquals("0_1", chunks.get(1).getChunkId());
     }

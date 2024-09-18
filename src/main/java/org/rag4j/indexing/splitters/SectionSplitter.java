@@ -12,6 +12,9 @@ public class SectionSplitter implements Splitter {
     @Override
     public List<Chunk> split(InputDocument inputDocument, Chunk parentChunk) {
         String inputText = (parentChunk == null) ? inputDocument.getText() : parentChunk.getText();
+        if (inputText.isBlank()) {
+            return List.of();
+        }
         String[] sections = inputText.split("\\n\\s*\\n");
 
         List<Chunk> chunks = new ArrayList<>();
