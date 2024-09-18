@@ -24,7 +24,7 @@ public class RAGArchitectureTest {
     public static final ArchRule indexingPackageRule = classes()
             .that().resideInAPackage("org.rag4j.indexing..")
             .should().onlyBeAccessed().byAnyPackage("org.rag4j.applications..", "org.rag4j.indexing..")
-            .andShould().onlyDependOnClassesThat().resideInAnyPackage("org.rag4j.indexing..", "org.rag4j.util..", "org.rag4j.rag.model..", "org.rag4j.rag.store", "opennlp..","java..", "org.slf4j..", "lombok..", "org.mockito..", "org.junit..", "com.knuddels.jtokkit..");
+            .andShould().onlyDependOnClassesThat().resideInAnyPackage("org.rag4j.indexing..", "org.rag4j.util..", "org.rag4j.rag.model..", "org.rag4j.rag.store", "org.rag4j.rag.generation..", "opennlp..","java..", "org.slf4j..", "lombok..", "org.mockito..", "org.junit..", "com.knuddels.jtokkit..");
 
     @ArchTest
     public static final ArchRule utilPackageRule = classes()
