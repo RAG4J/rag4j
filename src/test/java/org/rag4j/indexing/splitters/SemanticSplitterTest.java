@@ -45,9 +45,9 @@ class SemanticSplitterTest {
         List<Chunk> chunks = semanticSplitter.split(inputDocument, null);
 
         assertEquals(2, chunks.size());
-        assertEquals("Description 1", chunks.get(0).getText());
+        assertEquals("Subject 1: Description 1", chunks.get(0).getText());
         assertEquals("0", chunks.get(0).getChunkId());
-        assertEquals("Description 2", chunks.get(1).getText());
+        assertEquals("Subject 2: Description 2", chunks.get(1).getText());
         assertEquals("1", chunks.get(1).getChunkId());
     }
 }
