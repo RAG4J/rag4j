@@ -74,7 +74,7 @@ class MaxTokenSplitterTest {
                 .documentId("doc1")
                 .chunkId("0")
                 .totalChunks(1)
-                .text("hello java programmer, how")
+                .text("hello java programmer, how are you doing?")
                 .properties(Map.of())
                 .build();
 

@@ -2,6 +2,7 @@ package org.rag4j.integrations.openai;
 
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.models.ChatCompletions;
+import com.azure.ai.openai.models.ChatCompletionsJsonResponseFormat;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import org.rag4j.rag.generation.chat.ChatPrompt;
@@ -24,6 +25,7 @@ public class OpenAIChatService implements ChatService {
         this.client = client;
     }
 
+    @Override
     public String askForResponse(ChatPrompt prompt) {
         ChatCompletionsOptions options = OpenAIPrompt.constructPrompt(prompt, 1.0);
 
@@ -35,5 +37,21 @@ public class OpenAIChatService implements ChatService {
                 usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
 
         return chatCompletions.getChoices().getFirst().getMessage().getContent();
+    }
+
+    @Override
+    public String askForJsonResponse(ChatPrompt prompt) {
+        ChatCompletionsOptions options = OpenAIPrompt.constructPrompt(prompt, 1.0);
+        options.setResponseFormat(new ChatCompletionsJsonResponseFormat());
+
+        ChatCompletions chatCompletions = client.getChatCompletions(this.model, options);
+
+        CompletionsUsage usage = chatCompletions.getUsage();
+        LOGGER.info("Usage: number of prompt token is {}, "
+                        + "number of completion token is {}, and number of total tokens in request and response is {}.",
+                usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
+
+        return chatCompletions.getChoices().getFirst().getMessage().getContent();
+
     }
 }

@@ -12,4 +12,6 @@ public interface ChatService {
      * @return the response from the chat
      */
     String askForResponse(ChatPrompt prompt);
+
+    String askForJsonResponse(ChatPrompt prompt);
 }
