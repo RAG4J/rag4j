@@ -38,7 +38,7 @@ public class KeyLoader {
         this.provider = provider;
         this.secretKey = provider.getEnv("SECRET_KEY");
         try {
-            this.encryptedProperties = loadProperties("https://www.retrocinevr.nl/rag4j/" + fileName);
+            this.encryptedProperties = loadProperties("https://cocoen.nl/rag4jp/" + fileName);
         } catch (KeyLoaderException e) {
             LOGGER.error("There was a problem while loading the properties file from the remote location. Make sure to" +
                     "provide the environment variables yourself.");
