@@ -1,5 +1,7 @@
 package org.rag4j.integrations.weaviate;
 
+import java.util.Map;
+
 import io.weaviate.client.Config;
 import io.weaviate.client.WeaviateAuthClient;
 import io.weaviate.client.WeaviateClient;
@@ -11,10 +13,6 @@ import io.weaviate.client.v1.schema.model.WeaviateClass;
 import lombok.Getter;
 import org.rag4j.util.keyloader.KeyLoader;
 import org.slf4j.Logger;
-
-import java.util.Map;
-
-import static org.rag4j.integrations.weaviate.WeaviateContants.CLASS_NAME;
 
 @Getter
 public class WeaviateAccess {
@@ -113,13 +111,6 @@ public class WeaviateAccess {
             LOGGER.info("meta.hostname: {}", meta.getResult().getHostname());
             LOGGER.info("meta.version: {}", meta.getResult().getVersion());
             LOGGER.info("meta.modules: {}", meta.getResult().getModules());
-            LOGGER.info("Class name: {}", CLASS_NAME);
-            if (doesClassExist(CLASS_NAME)) {
-                LOGGER.info("Class {} exists", CLASS_NAME);
-                LOGGER.info("schema: {}", getSchemaForClass(CLASS_NAME));
-            } else {
-                LOGGER.info("Class {} does not exist", CLASS_NAME);
-            }
         } else {
             LOGGER.error("Error: {}", meta.getError().getMessages());
         }

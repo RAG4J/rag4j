@@ -19,7 +19,6 @@ import org.rag4j.rag.retrieval.ChunkProcessor;
 import org.rag4j.rag.retrieval.Retriever;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.rag4j.integrations.weaviate.WeaviateContants.CLASS_NAME;
@@ -33,6 +32,7 @@ public class WeaviateRetriever implements Retriever {
     private final Embedder embedder;
     private final Boolean useHybrid;
     private final List<String> fieldsToRetrieve;
+    private String collection;
 
     public WeaviateRetriever(WeaviateAccess weaviateAccess, Embedder embedder) {
         this(weaviateAccess, embedder, false, List.of());
@@ -42,11 +42,20 @@ public class WeaviateRetriever implements Retriever {
         this(weaviateAccess, embedder, useHybrid, List.of());
     }
 
+    public WeaviateRetriever(WeaviateAccess weaviateAccess, Embedder embedder, Boolean useHybrid, String collection) {
+        this(weaviateAccess, embedder, useHybrid, List.of(), collection);
+    }
+
     public WeaviateRetriever(WeaviateAccess weaviateAccess, Embedder embedder, Boolean useHybrid, List<String> fieldsToRetrieve) {
+        this(weaviateAccess, embedder, useHybrid, fieldsToRetrieve, CLASS_NAME);
+    }
+
+    public WeaviateRetriever(WeaviateAccess weaviateAccess, Embedder embedder, Boolean useHybrid, List<String> fieldsToRetrieve, String collection) {
         this.weaviateAccess = weaviateAccess;
         this.embedder = embedder;
         this.useHybrid = useHybrid;
         this.fieldsToRetrieve = fieldsToRetrieve;
+        this.collection = collection;
     }
 
 
@@ -60,7 +69,7 @@ public class WeaviateRetriever implements Retriever {
         Float[] floatVector = vector.toArray(new Float[0]);
 
         Get get = weaviateAccess.getClient().graphQL().get()
-                .withClassName(CLASS_NAME)
+                .withClassName(collection)
                 .withFields(buildFields(true))
                 .withLimit(maxResults);
         if (useHybrid) {
@@ -86,14 +95,14 @@ public class WeaviateRetriever implements Retriever {
         }
 
         GraphQLResponse response = result.getResult();
-        return parseGraphQLRelevantResponse(response);
+        return parseGraphQLRelevantResponse(response, this.collection);
     }
 
     @Override
     public Chunk getChunk(String documentId, String chunkId) {
 
         Result<GraphQLResponse> result = weaviateAccess.getClient().graphQL().get()
-                .withClassName(CLASS_NAME)
+                .withClassName(collection)
                 .withFields(buildFields(false))
                 .withWhere(WhereArgument.builder()
                         .filter(WhereFilter.builder()
@@ -130,7 +139,7 @@ public class WeaviateRetriever implements Retriever {
         boolean done = false;
         while (!done) {
             Result<GraphQLResponse> result = weaviateAccess.getClient().graphQL().get()
-                    .withClassName(CLASS_NAME)
+                    .withClassName(collection)
                     .withFields(buildFields(false))
                     .withLimit(limit)
                     .withOffset(offset)
@@ -141,7 +150,7 @@ public class WeaviateRetriever implements Retriever {
             }
 
             GraphQLResponse response = result.getResult();
-            List<Chunk> chunks = parseGraphQLResponseList(response);
+            List<Chunk> chunks = parseGraphQLResponseList(response, this.collection);
             for (Chunk chunk : chunks) {
                 chunkProcessor.process(chunk);
             }
@@ -175,6 +184,6 @@ public class WeaviateRetriever implements Retriever {
     }
 
     private Chunk parseGraphQLResponse(GraphQLResponse response) {
-        return parseGraphQLResponseList(response).getFirst();
+        return parseGraphQLResponseList(response, this.collection).getFirst();
     }
 }
