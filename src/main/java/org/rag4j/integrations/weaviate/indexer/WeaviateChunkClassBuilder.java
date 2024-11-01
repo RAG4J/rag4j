@@ -1,20 +1,18 @@
 package org.rag4j.integrations.weaviate.indexer;
 
-import io.weaviate.client.v1.misc.model.BM25Config;
-import io.weaviate.client.v1.misc.model.InvertedIndexConfig;
-import io.weaviate.client.v1.schema.model.Property;
-import io.weaviate.client.v1.schema.model.WeaviateClass;
-import org.rag4j.integrations.weaviate.WeaviateContants;
-import org.rag4j.integrations.weaviate.schema.Text2VecOpenAIModuleConfig;
-import org.rag4j.integrations.weaviate.schema.Text2VecOpenAIPropertyModuleConfig;
-import org.rag4j.integrations.openai.OpenAIConstants;
-
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
+import io.weaviate.client.v1.misc.model.BM25Config;
+import io.weaviate.client.v1.misc.model.InvertedIndexConfig;
+import io.weaviate.client.v1.schema.model.Property;
+import io.weaviate.client.v1.schema.model.WeaviateClass;
+import org.rag4j.integrations.openai.OpenAIConstants;
+import org.rag4j.integrations.weaviate.schema.Text2VecOpenAIModuleConfig;
+import org.rag4j.integrations.weaviate.schema.Text2VecOpenAIPropertyModuleConfig;
+
+import static java.lang.Boolean.*;
 
 public class WeaviateChunkClassBuilder {
 
@@ -27,14 +25,14 @@ public class WeaviateChunkClassBuilder {
      *
      * @return a WeaviateClass object for the Chunk class
      */
-    public WeaviateClass build() {
+    public WeaviateClass build(String collection) {
         List<Property> properties = defaultProperties();
 
         List<Property> combined = Stream.concat(properties.stream(), additionalProperties().stream())
                 .toList();
 
         return WeaviateClass.builder()
-                .className(WeaviateContants.CLASS_NAME)
+                .className(collection)
                 .description("A chunk of text to be indexed by Weaviate")
                 .vectorizer("text2vec-openai")
                 .moduleConfig(Map.of(
@@ -65,7 +63,7 @@ public class WeaviateChunkClassBuilder {
                         .build(),
                 Property.builder()
                         .name("chunkId")
-                        .dataType(List.of("int"))
+                        .dataType(List.of("text"))
                         .description("The id of this chunk")
                         .moduleConfig(buildModuleConfig(TRUE))
                         .build(),

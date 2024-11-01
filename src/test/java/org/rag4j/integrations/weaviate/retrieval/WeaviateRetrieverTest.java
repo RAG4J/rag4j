@@ -49,7 +49,7 @@ public class WeaviateRetrieverTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        weaviateRetriever = new WeaviateRetriever(weaviateAccess, embedder, false);
+        weaviateRetriever = new WeaviateRetriever(weaviateAccess, embedder, false, "Collection1");
     }
 
     @Test
@@ -80,12 +80,12 @@ public class WeaviateRetrieverTest {
 
         when(embedder.embed(question)).thenReturn(vector);
         GraphQLResponse response = GraphQLResponse.builder()
-                .data(Map.of("Get", Map.of("Chunk", List.of(Map.of("documentId", "doc1", "chunkId", "0", "totalChunks", 3d, "text", "an answer","_additional",Map.of("distance",0.5d)),
+                .data(Map.of("Get", Map.of("Collection1", List.of(Map.of("documentId", "doc1", "chunkId", "0", "totalChunks", 3d, "text", "an answer","_additional",Map.of("distance",0.5d)),
                         Map.of("documentId", "doc1", "chunkId", "2", "totalChunks", 3d, "text", "with a question","_additional",Map.of("distance",0.45d))))))
                 .build();
 
         when(mockResponse.getResult()).thenReturn(response);
-        when(get.withClassName("Chunk")).thenReturn(get);
+        when(get.withClassName("Collection1")).thenReturn(get);
         when(get.withFields(any(Field[].class))).thenReturn(get);
         when(get.withLimit(anyInt())).thenReturn(get);
         when(get.withNearVector(any())).thenReturn(get);

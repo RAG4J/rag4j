@@ -1,14 +1,12 @@
 package org.rag4j.integrations.weaviate.indexer;
 
-import org.rag4j.rag.model.Chunk;
-import org.rag4j.integrations.weaviate.WeaviateAccess;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.rag4j.integrations.weaviate.WeaviateContants.CLASS_NAME;
+import org.rag4j.integrations.weaviate.WeaviateAccess;
+import org.rag4j.rag.model.Chunk;
 
 public class WeaviateChunkIndexer {
     private final WeaviateAccess weaviateAccess;
@@ -17,7 +15,7 @@ public class WeaviateChunkIndexer {
         this.weaviateAccess = weaviateAccess;
     }
 
-    public String indexChunk(Chunk chunk, List<Float> vector) {
+    public String indexChunk(Chunk chunk, List<Float> vector, String collection) {
         Map<String, Object> properties = new HashMap<>(chunk.getProperties());
         properties.put("documentId", chunk.getDocumentId());
         properties.put("chunkId", chunk.getChunkId());
@@ -32,7 +30,7 @@ public class WeaviateChunkIndexer {
 
         String documentId = UUID.randomUUID().toString();
 
-        weaviateAccess.addDocument(CLASS_NAME, documentId, properties, floatVector);
+        weaviateAccess.addDocument(collection, documentId, properties, floatVector);
 
         return documentId;
     }

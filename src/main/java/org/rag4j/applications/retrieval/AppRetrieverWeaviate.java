@@ -27,10 +27,10 @@ public class AppRetrieverWeaviate {
 
         List<String> additionalFields = List.of("title", "timerange");
         boolean useHybridSearch = false;
-        Retriever retriever = new WeaviateRetriever(weaviateAccess, embedder, useHybridSearch, additionalFields);
+        Retriever retriever = new WeaviateRetriever(weaviateAccess, embedder, useHybridSearch, additionalFields, "VasaCollection");
 
         // Use the components - Loop over all chunks
-        retriever.loopOverChunks(chunk -> System.out.printf("Document: %s - %d%n", chunk.getDocumentId(), chunk.getChunkId()));
+        retriever.loopOverChunks(chunk -> System.out.printf("Document: %s - %s%n", chunk.getDocumentId(), chunk.getChunkId()));
         System.out.println("-----------------");
 
         // Use the components - Get a specific chunk

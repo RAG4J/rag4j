@@ -13,16 +13,18 @@ public class WeaviateContentStore implements ContentStore {
 
     private final WeaviateChunkIndexer weaviateChunkIndexer;
     private final Embedder embedder;
+    private final String collection;
 
-    public WeaviateContentStore(WeaviateChunkIndexer weaviateChunkIndexer, Embedder embedder) {
+    public WeaviateContentStore(WeaviateChunkIndexer weaviateChunkIndexer, Embedder embedder, String collection) {
         this.weaviateChunkIndexer = weaviateChunkIndexer;
         this.embedder = embedder;
+        this.collection = collection;
     }
 
     @Override
     public void store(List<Chunk> chunks) {
         for (Chunk chunk : chunks) {
-            String documentId = weaviateChunkIndexer.indexChunk(chunk, embedder.embed(chunk.getText()));
+            String documentId = weaviateChunkIndexer.indexChunk(chunk, embedder.embed(chunk.getText()), this.collection);
             LOGGER.info("Indexed chunk {} with documentId {}", chunk, documentId);
         }
     }

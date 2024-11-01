@@ -11,18 +11,18 @@ import java.util.List;
 import java.util.Map;
 
 public class WeaviateResponseParser {
-    public static List<Chunk> parseGraphQLResponseList(GraphQLResponse response) {
+    public static List<Chunk> parseGraphQLResponseList(GraphQLResponse response, String collection) {
         Map<String,Object> data = parseData(response);
         Map<String,Object> get = parseGet(data);
-        List<Map<String, Object>> chunks = parseChunks(get);
+        List<Map<String, Object>> chunks = parseChunks(get, collection);
 
         return chunks.stream().map(WeaviateResponseParser::extractChunk).toList();
     }
 
-    public static List<RelevantChunk> parseGraphQLRelevantResponse(GraphQLResponse response) {
+    public static List<RelevantChunk> parseGraphQLRelevantResponse(GraphQLResponse response, String collection) {
         Map<String,Object> data = parseData(response);
         Map<String,Object> get = parseGet(data);
-        List<Map<String, Object>> chunks = parseChunks(get);
+        List<Map<String, Object>> chunks = parseChunks(get, collection);
 
         return chunks.stream().map(chunk -> {
             Chunk extractedChunk = extractChunk(chunk);
@@ -74,7 +74,11 @@ public class WeaviateResponseParser {
         if (data instanceof Map<?,?>) {
             return (Map<String,Object>) data;
         } else {
-            throw new WeaviateException("Expected data to be a Map<String,Object> but was " + data.getClass());
+            if (data != null) {
+                throw new WeaviateException("Expected data to be a Map<String,Object> but was " + data.getClass());
+            } else {
+                throw new WeaviateException("Expected data to be a Map but was null");
+            }
         }
     }
 
@@ -89,8 +93,8 @@ public class WeaviateResponseParser {
     }
 
     @SuppressWarnings("unchecked")
-    private static List<Map<String,Object>> parseChunks(Map<String,Object> get) {
-        Object chunks = get.get(WeaviateContants.CLASS_NAME);
+    private static List<Map<String,Object>> parseChunks(Map<String,Object> get, String collection) {
+        Object chunks = get.get(collection);
         if (chunks instanceof List<?>) {
             return (List<Map<String,Object>>) chunks;
         } else {
