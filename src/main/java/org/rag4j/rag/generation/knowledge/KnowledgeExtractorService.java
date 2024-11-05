@@ -36,7 +36,7 @@ public class KnowledgeExtractorService {
     }
 
     // @formatter:off
-    private final static String extractorUserPrompt =
+    private static final String extractorUserPrompt =
             "Task: Extract Knowledge Chunks\n" +
             "\n" +
             "Objective: Extract meaningful knowledge chunks from the provided text. Each chunk should be a distinct, self-contained unit of information presented in a subject-description format. It is essential that the information is from the input text. Do not make any assumptions or add any external information.\n" +
@@ -61,6 +61,6 @@ public class KnowledgeExtractorService {
 
 
     // @formatter:off
-    private final static String extractorSystemPrompt =
+    private static final String extractorSystemPrompt =
             "You are an assistant that takes apart a piece of text into semantic chunks to be used in a RAG system.";
 }
