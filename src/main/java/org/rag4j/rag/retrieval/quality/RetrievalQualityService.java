@@ -58,10 +58,13 @@ public class RetrievalQualityService {
         return questionAnswerRecords;
     }
 
-    public List<QuestionAnswerRecord> readQuestionAnswersFromFilePath(Path filePath) {
+    public List<QuestionAnswerRecord> readQuestionAnswersFromFilePath(Path filePath, boolean deleteAfterRead) {
         List<QuestionAnswerRecord> questionAnswerRecords = new ArrayList<>();
         try (Reader reader = new BufferedReader(new InputStreamReader(Files.newInputStream(filePath), StandardCharsets.UTF_8))) {
             readQuestionAnswerRecords(reader, questionAnswerRecords);
+            if (deleteAfterRead) {
+                cleanupTempFile(filePath);
+            }
         } catch (IOException e) {
             LOGGER.error("An error occurred while reading the file.", e);
             throw new RuntimeException(e);
@@ -81,6 +84,46 @@ public class RetrievalQualityService {
             String text = csvRecord.get("text");
             String question = csvRecord.get("question");
             questionAnswerRecords.add(new QuestionAnswerRecord(documentId, chunkId, text, question));
+        }
+    }
+
+
+
+    private static void cleanupTempFile(Path filePath) {
+        try {
+            // Check if the file exists
+            if (Files.exists(filePath)) {
+                // Delete the file
+                Files.delete(filePath);
+                LOGGER.debug("File deleted: {}", filePath);
+            } else {
+                LOGGER.debug("File not found: {}", filePath);
+                return; // If the file doesn't exist, we can't delete the directory
+            }
+
+            // Get the parent directory
+            Path parentDir = filePath.getParent();
+            if (parentDir != null && Files.isDirectory(parentDir)) {
+                // Check if the directory is empty
+                if (isDirectoryEmpty(parentDir)) {
+                    // Delete the directory
+                    Files.delete(parentDir);
+                    LOGGER.debug("Directory deleted: {}", parentDir);
+                } else {
+                    LOGGER.debug("Directory is not empty, not deleting: {}", parentDir);
+                }
+            } else {
+                LOGGER.info("Parent directory not found or is not a directory: {}", parentDir);
+            }
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
+
+    // Helper method to check if a directory is empty
+    public static boolean isDirectoryEmpty(Path directory) throws IOException {
+        try (var dirStream = Files.newDirectoryStream(directory)) {
+            return !dirStream.iterator().hasNext(); // Returns true if directory is empty
         }
     }
 }
