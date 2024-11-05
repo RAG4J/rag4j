@@ -19,7 +19,7 @@ import java.util.*;
  * This class is used to generate questions for a given text and to evaluate the quality of the retrieval.
  */
 public class RetrievalQualityService {
-    private final static Logger LOGGER = LoggerFactory.getLogger(RetrievalQualityService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RetrievalQualityService.class);
 
     private final Retriever retriever;
 
@@ -34,7 +34,7 @@ public class RetrievalQualityService {
             String question = questionAnswerRecord.getQuestion();
             List<Float> embed = embedder.embed(question);
             RelevantChunk relevantChunks = this.retriever.findRelevantChunks(question, embed, 1).getFirst();
-            if (relevantChunks.getChunkId() == questionAnswerRecord.getChunkId() && relevantChunks.getDocumentId().equals(questionAnswerRecord.getDocumentId())) {
+            if (relevantChunks.getChunkId().equals(questionAnswerRecord.getChunkId()) && relevantChunks.getDocumentId().equals(questionAnswerRecord.getDocumentId())) {
                 correct.add(relevantChunks.getDocumentChunkId());
             } else {
                 incorrect.add(questionAnswerRecord.getDocumentId() + "_" + questionAnswerRecord.getChunkId());
@@ -53,11 +53,11 @@ public class RetrievalQualityService {
                     .setSkipHeaderRecord(true)
                     .build();
             Iterable<CSVRecord> records = csvFormat.parse(reader);
-            for (CSVRecord record : records) {
-                String documentId = record.get("document");
-                String chunkId = record.get("chunk");
-                String text = record.get("text");
-                String question = record.get("question");
+            for (CSVRecord csvRecord : records) {
+                String documentId = csvRecord.get("document");
+                String chunkId = csvRecord.get("chunk");
+                String text = csvRecord.get("text");
+                String question = csvRecord.get("question");
                 questionAnswerRecords.add(new QuestionAnswerRecord(documentId, chunkId, text, question));
             }
         } catch (IOException e) {
