@@ -3,7 +3,7 @@ package org.rag4j.rag.tracker;
 import org.slf4j.Logger;
 
 public class LoggingRAGObserverPersistor implements RAGObserverPersistor {
-    private final static Logger logger = org.slf4j.LoggerFactory.getLogger(LoggingRAGObserverPersistor.class);
+    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(LoggingRAGObserverPersistor.class);
 
     @Override
     public void persistCommonProperties(RAGObserver ragObserver) {

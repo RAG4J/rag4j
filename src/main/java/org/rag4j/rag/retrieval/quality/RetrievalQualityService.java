@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 /**
@@ -48,18 +50,7 @@ public class RetrievalQualityService {
     public List<QuestionAnswerRecord> readQuestionAnswersFromFile(String fileName) {
         List<QuestionAnswerRecord> questionAnswerRecords = new ArrayList<>();
         try (Reader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(fileName)), StandardCharsets.UTF_8))) {
-            CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
-                    .setHeader("document", "chunk", "text", "question")
-                    .setSkipHeaderRecord(true)
-                    .build();
-            Iterable<CSVRecord> records = csvFormat.parse(reader);
-            for (CSVRecord csvRecord : records) {
-                String documentId = csvRecord.get("document");
-                String chunkId = csvRecord.get("chunk");
-                String text = csvRecord.get("text");
-                String question = csvRecord.get("question");
-                questionAnswerRecords.add(new QuestionAnswerRecord(documentId, chunkId, text, question));
-            }
+            readQuestionAnswerRecords(reader, questionAnswerRecords);
         } catch (IOException e) {
             LOGGER.error("An error occurred while reading the file.", e);
             throw new RuntimeException(e);
@@ -67,4 +58,29 @@ public class RetrievalQualityService {
         return questionAnswerRecords;
     }
 
+    public List<QuestionAnswerRecord> readQuestionAnswersFromFilePath(Path filePath) {
+        List<QuestionAnswerRecord> questionAnswerRecords = new ArrayList<>();
+        try (Reader reader = new BufferedReader(new InputStreamReader(Files.newInputStream(filePath), StandardCharsets.UTF_8))) {
+            readQuestionAnswerRecords(reader, questionAnswerRecords);
+        } catch (IOException e) {
+            LOGGER.error("An error occurred while reading the file.", e);
+            throw new RuntimeException(e);
+        }
+        return questionAnswerRecords;
+    }
+
+    private static void readQuestionAnswerRecords(Reader reader, List<QuestionAnswerRecord> questionAnswerRecords) throws IOException {
+        CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
+                .setHeader("document", "chunk", "text", "question")
+                .setSkipHeaderRecord(true)
+                .build();
+        Iterable<CSVRecord> records = csvFormat.parse(reader);
+        for (CSVRecord csvRecord : records) {
+            String documentId = csvRecord.get("document");
+            String chunkId = csvRecord.get("chunk");
+            String text = csvRecord.get("text");
+            String question = csvRecord.get("question");
+            questionAnswerRecords.add(new QuestionAnswerRecord(documentId, chunkId, text, question));
+        }
+    }
 }

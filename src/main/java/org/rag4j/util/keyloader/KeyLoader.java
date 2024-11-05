@@ -21,9 +21,9 @@ import java.util.Properties;
  * it is loaded from a remote location. The key for the encryption is obtained from the environment variable SECRET_KEY.
  */
 public class KeyLoader {
-    private final static String WEAVIATE_API_KEY = "weaviate_api_key";
-    private final static String WEAVIATE_URL = "weaviate_url";
-    private final static String OPENAI_API_KEY = "openai_api_key";
+    private static final String WEAVIATE_API_KEY = "weaviate_api_key";
+    private static final String WEAVIATE_URL = "weaviate_url";
+    private static final String OPENAI_API_KEY = "openai_api_key";
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(KeyLoader.class);
     private final String secretKey;
 
