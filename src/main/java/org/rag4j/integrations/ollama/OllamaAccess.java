@@ -47,7 +47,7 @@ public class OllamaAccess {
         return models;
     }
 
-    public String generateAnswer(String prompt, String model) {
+    public String generateAnswer(String prompt, String model, boolean returnJson) {
         String connectionUrl = this.connectionUrl + "/api/generate";
 
         // Create JSON request body
@@ -55,6 +55,10 @@ public class OllamaAccess {
         jsonRequest.put("prompt", prompt);
         jsonRequest.put("model", model);
         jsonRequest.put("stream", false);
+
+        if (returnJson) {
+            jsonRequest.put("json", true);
+        }
 
         JSONObject jsonResponse = execute_post_request(connectionUrl, jsonRequest);
 
