@@ -18,12 +18,16 @@ public class OllamaChatService implements ChatService {
 
     @Override
     public String askForResponse(ChatPrompt prompt) {
-        String stringPrompt = String.format("%s\n\n%s",prompt.createSystemMessage(), prompt.createUserMessage());
-        return this.ollama.generateAnswer(stringPrompt, this.model);
+        return generateResponse(prompt, false);
     }
 
     @Override
     public String askForJsonResponse(ChatPrompt prompt) {
-        return askForResponse(prompt);
+        return generateResponse(prompt, true);
+    }
+
+    private String generateResponse(ChatPrompt prompt, boolean returnJson) {
+        String stringPrompt = String.format("%s\n\n%s",prompt.createSystemMessage(), prompt.createUserMessage());
+        return this.ollama.generateAnswer(stringPrompt, this.model, returnJson);
     }
 }
