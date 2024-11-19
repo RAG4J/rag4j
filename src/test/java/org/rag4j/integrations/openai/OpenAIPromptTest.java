@@ -22,7 +22,7 @@ public void constructPromptWithValidParamsShouldReturnChatCompletionsOptionsWith
     ChatCompletionsOptions result = OpenAIPrompt.constructPrompt(chatPrompt, temperature);
 
     assertInstanceOf(ChatRequestSystemMessage.class, result.getMessages().get(0));
-    assertEquals("System message", ((ChatRequestSystemMessage)result.getMessages().get(0)).getContent());
+    assertEquals("System message", ((ChatRequestSystemMessage)result.getMessages().get(0)).getContent().toString());
     assertInstanceOf(ChatRequestUserMessage.class, result.getMessages().get(1));
     assertEquals(temperature, result.getTemperature());
 }
@@ -42,7 +42,7 @@ public void constructPromptWithNullTemperatureShouldReturnChatCompletionsOptions
     ChatCompletionsOptions result = OpenAIPrompt.constructPrompt(chatPrompt, null);
 
     assertInstanceOf(ChatRequestSystemMessage.class, result.getMessages().get(0));
-    assertEquals("System message", ((ChatRequestSystemMessage)result.getMessages().get(0)).getContent());
+    assertEquals("System message", ((ChatRequestSystemMessage)result.getMessages().get(0)).getContent().toString());
     assertInstanceOf(ChatRequestUserMessage.class, result.getMessages().get(1));
     assertNull(result.getTemperature());
 }}
