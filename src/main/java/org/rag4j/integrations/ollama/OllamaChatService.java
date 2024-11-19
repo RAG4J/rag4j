@@ -28,6 +28,6 @@ public class OllamaChatService implements ChatService {
 
     private String generateResponse(ChatPrompt prompt, boolean returnJson) {
         String stringPrompt = String.format("%s\n\n%s",prompt.createSystemMessage(), prompt.createUserMessage());
-        return this.ollama.generateAnswer(stringPrompt, this.model);
+        return this.ollama.generateAnswer(stringPrompt, this.model, returnJson);
     }
 }
