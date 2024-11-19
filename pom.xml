@@ -4,7 +4,7 @@
 
     <groupId>org.rag4j</groupId>
     <artifactId>rag4j</artifactId>
-    <version>1.4.0</version>
+    <version>1.5.0</version>
     <packaging>jar</packaging>
 
     <name>rag4j</name>
