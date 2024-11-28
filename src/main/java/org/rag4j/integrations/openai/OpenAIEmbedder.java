@@ -33,4 +33,19 @@ public class OpenAIEmbedder implements Embedder {
 
         return embeddings.getData().getFirst().getEmbedding();
     }
+
+    @Override
+    public String identifier() {
+        return (supplier() + "-embedder-" + model()).toLowerCase();
+    }
+
+    @Override
+    public String supplier() {
+        return "OpenAI";
+    }
+
+    @Override
+    public String model() {
+        return this.model;
+    }
 }

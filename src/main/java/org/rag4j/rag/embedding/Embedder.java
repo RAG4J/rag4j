@@ -12,4 +12,10 @@ public interface Embedder {
      * @return the embedding
      */
     List<Float> embed(String text);
+
+    String identifier();
+
+    String supplier();
+
+    String model();
 }

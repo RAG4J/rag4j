@@ -22,4 +22,19 @@ public class OnnxBertEmbedder implements Embedder {
         }
         return list;
     }
+
+    @Override
+    public String identifier() {
+        return (supplier() + "-embedder-" + model()).toLowerCase();
+    }
+
+    @Override
+    public String supplier() {
+        return "Onnx";
+    }
+
+    @Override
+    public String model() {
+        return "OnnxBertBiEncoder";
+    }
 }
