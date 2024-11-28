@@ -2,6 +2,8 @@ package org.rag4j.applications.indexing;
 
 import org.rag4j.indexing.ContentReader;
 import org.rag4j.indexing.Splitter;
+import org.rag4j.integrations.ollama.OllamaAccess;
+import org.rag4j.integrations.ollama.OllamaEmbedder;
 import org.rag4j.rag.embedding.Embedder;
 import org.rag4j.rag.model.RelevantChunk;
 import org.rag4j.indexing.IndexingService;
@@ -9,6 +11,7 @@ import org.rag4j.indexing.splitters.SingleChunkSplitter;
 import org.rag4j.rag.embedding.local.OnnxBertEmbedder;
 import org.rag4j.rag.store.local.InternalContentStore;
 
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -26,6 +29,8 @@ public class AppIndexerInMemory {
 
         // Use the components
         indexingService.indexDocuments(contentReader, splitter);
+        contentStore.backupToDisk(Path.of("backups"), "backup.dat");
+
         String question = "Since when was the Vasa available for the public to visit?";
         List<RelevantChunk> relevantChunks = contentStore.findRelevantChunks(question, 1);
 
@@ -33,7 +38,20 @@ public class AppIndexerInMemory {
         relevantChunks.stream().findFirst().ifPresent(chunk -> {
             System.out.printf("Relevant chunk: %s%n", chunk.getText());
             System.out.printf("Score: %.4f%n", chunk.getScore());
+            System.out.printf("Document: %s%n", chunk.getDocumentId());
+        });
+
+        InternalContentStore loadedContentStore = new InternalContentStore(new OllamaEmbedder(new OllamaAccess()));
+        loadedContentStore.loadFromDisk(Path.of("backups"), "backup.dat");
+
+        relevantChunks = contentStore.findRelevantChunks(question, 1);
+
+        // Print the result
+        relevantChunks.stream().findFirst().ifPresent(chunk -> {
+            System.out.printf("Relevant chunk: %s%n", chunk.getText());
+            System.out.printf("Score: %.4f%n", chunk.getScore());
             System.out.printf("Document: %s", chunk.getDocumentId());
         });
+
     }
 }
