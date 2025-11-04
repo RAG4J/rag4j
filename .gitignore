@@ -41,3 +41,8 @@ properties.txt
 properties-test.txt
 
 src/main/resources/env.properties
+backups
+
+.java-version
+properties-encrypted-test.txt
+properties-encrypted.txt
