@@ -41,6 +41,7 @@ properties.txt
 properties-test.txt
 
 src/main/resources/env.properties
+examples/src/main/resources/env.properties
 backups
 
 .java-version
