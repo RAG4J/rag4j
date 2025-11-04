@@ -1,12 +1,11 @@
 package org.rag4j.applications.indexing;
 
-import com.azure.ai.openai.OpenAIClient;
+import com.openai.client.OpenAIClient;
 import org.rag4j.indexing.InputDocument;
 import org.rag4j.indexing.splitters.SemanticSplitter;
-import org.rag4j.integrations.openai.OpenAIChatService;
-import org.rag4j.integrations.openai.OpenAIFactory;
+import org.rag4j.integration.openai.OpenAIChatService;
+import org.rag4j.integration.openai.OpenAIFactory;
 import org.rag4j.rag.generation.chat.ChatService;
-import org.rag4j.rag.generation.knowledge.Knowledge;
 import org.rag4j.rag.generation.knowledge.KnowledgeExtractorService;
 import org.rag4j.rag.model.Chunk;
 import org.rag4j.util.keyloader.KeyLoader;

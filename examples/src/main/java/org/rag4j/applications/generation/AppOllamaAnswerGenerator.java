@@ -1,7 +1,8 @@
 package org.rag4j.applications.generation;
 
-import org.rag4j.integrations.ollama.OllamaAccess;
-import org.rag4j.integrations.ollama.OllamaChatService;
+
+import org.rag4j.integration.ollama.OllamaAccess;
+import org.rag4j.integration.ollama.OllamaChatService;
 
 public class AppOllamaAnswerGenerator {
     public static void main(String[] args) {

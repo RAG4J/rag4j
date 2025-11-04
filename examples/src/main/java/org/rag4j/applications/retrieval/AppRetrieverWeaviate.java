@@ -1,15 +1,15 @@
 package org.rag4j.applications.retrieval;
 
-import com.azure.ai.openai.OpenAIClient;
-import org.rag4j.integrations.openai.OpenAIFactory;
+import com.openai.client.OpenAIClient;
+import org.rag4j.integration.openai.OpenAIFactory;
 import org.rag4j.rag.model.Chunk;
 import org.rag4j.rag.model.RelevantChunk;
 import org.rag4j.rag.embedding.Embedder;
-import org.rag4j.integrations.openai.OpenAIEmbedder;
+import org.rag4j.integration.openai.OpenAIEmbedder;
 import org.rag4j.util.keyloader.KeyLoader;
-import org.rag4j.integrations.weaviate.WeaviateAccess;
+import org.rag4j.integration.weaviate.WeaviateAccess;
 import org.rag4j.rag.retrieval.Retriever;
-import org.rag4j.integrations.weaviate.retrieval.WeaviateRetriever;
+import org.rag4j.integration.weaviate.retrieval.WeaviateRetriever;
 
 import java.util.List;
 

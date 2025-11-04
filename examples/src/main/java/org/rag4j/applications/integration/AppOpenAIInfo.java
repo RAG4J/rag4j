@@ -1,9 +1,9 @@
 package org.rag4j.applications.integration;
 
-import com.azure.ai.openai.OpenAIClient;
-import org.rag4j.integrations.openai.OpenAIConstants;
-import org.rag4j.integrations.openai.OpenAIEmbedder;
-import org.rag4j.integrations.openai.OpenAIFactory;
+import com.openai.client.OpenAIClient;
+import org.rag4j.integration.openai.OpenAIConstants;
+import org.rag4j.integration.openai.OpenAIEmbedder;
+import org.rag4j.integration.openai.OpenAIFactory;
 import org.rag4j.util.keyloader.KeyLoader;
 
 public class AppOpenAIInfo {

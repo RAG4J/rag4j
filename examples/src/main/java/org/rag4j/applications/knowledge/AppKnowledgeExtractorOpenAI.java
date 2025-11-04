@@ -1,8 +1,8 @@
 package org.rag4j.applications.knowledge;
 
-import com.azure.ai.openai.OpenAIClient;
-import org.rag4j.integrations.openai.OpenAIChatService;
-import org.rag4j.integrations.openai.OpenAIFactory;
+import com.openai.client.OpenAIClient;
+import org.rag4j.integration.openai.OpenAIChatService;
+import org.rag4j.integration.openai.OpenAIFactory;
 import org.rag4j.rag.generation.chat.ChatService;
 import org.rag4j.rag.generation.knowledge.Knowledge;
 import org.rag4j.rag.generation.knowledge.KnowledgeExtractorService;

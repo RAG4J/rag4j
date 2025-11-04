@@ -1,17 +1,17 @@
 package org.rag4j.applications.generation;
 
-import com.azure.ai.openai.OpenAIClient;
+import com.openai.client.OpenAIClient;
 import org.rag4j.indexing.IndexingService;
 import org.rag4j.indexing.InputDocument;
 import org.rag4j.indexing.splitters.SingleChunkSplitter;
-import org.rag4j.integrations.openai.OpenAIChatService;
-import org.rag4j.integrations.openai.OpenAIEmbedder;
-import org.rag4j.integrations.openai.OpenAIFactory;
+import org.rag4j.integration.openai.OpenAIChatService;
+import org.rag4j.integration.openai.OpenAIEmbedder;
+import org.rag4j.integration.openai.OpenAIFactory;
+import org.rag4j.local.store.InternalContentStore;
 import org.rag4j.rag.embedding.Embedder;
 import org.rag4j.rag.generation.QuestionGenerator;
 import org.rag4j.rag.generation.QuestionGeneratorService;
 import org.rag4j.rag.generation.chat.ChatService;
-import org.rag4j.rag.store.local.InternalContentStore;
 import org.rag4j.util.keyloader.KeyLoader;
 
 /**

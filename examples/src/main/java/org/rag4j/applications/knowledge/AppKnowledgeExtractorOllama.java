@@ -1,14 +1,10 @@
 package org.rag4j.applications.knowledge;
 
-import com.azure.ai.openai.OpenAIClient;
-import org.rag4j.integrations.ollama.OllamaAccess;
-import org.rag4j.integrations.ollama.OllamaChatService;
-import org.rag4j.integrations.openai.OpenAIChatService;
-import org.rag4j.integrations.openai.OpenAIFactory;
+import org.rag4j.integration.ollama.OllamaAccess;
+import org.rag4j.integration.ollama.OllamaChatService;
 import org.rag4j.rag.generation.chat.ChatService;
 import org.rag4j.rag.generation.knowledge.Knowledge;
 import org.rag4j.rag.generation.knowledge.KnowledgeExtractorService;
-import org.rag4j.util.keyloader.KeyLoader;
 
 import java.util.List;
 

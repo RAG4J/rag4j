@@ -2,14 +2,14 @@ package org.rag4j.applications.indexing;
 
 import org.rag4j.indexing.ContentReader;
 import org.rag4j.indexing.Splitter;
-import org.rag4j.integrations.ollama.OllamaAccess;
-import org.rag4j.integrations.ollama.OllamaEmbedder;
+import org.rag4j.integration.ollama.OllamaAccess;
+import org.rag4j.integration.ollama.OllamaEmbedder;
+import org.rag4j.local.store.InternalContentStore;
 import org.rag4j.rag.embedding.Embedder;
 import org.rag4j.rag.model.RelevantChunk;
 import org.rag4j.indexing.IndexingService;
 import org.rag4j.indexing.splitters.SingleChunkSplitter;
 import org.rag4j.rag.embedding.local.OnnxBertEmbedder;
-import org.rag4j.rag.store.local.InternalContentStore;
 
 import java.nio.file.Path;
 import java.util.List;

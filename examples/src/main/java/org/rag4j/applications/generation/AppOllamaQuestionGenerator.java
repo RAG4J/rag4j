@@ -1,8 +1,8 @@
 package org.rag4j.applications.generation;
 
-import org.rag4j.integrations.ollama.OllamaAccess;
-import org.rag4j.integrations.ollama.OllamaChatService;
-import org.rag4j.integrations.ollama.OllamaEmbedder;
+import org.rag4j.integration.ollama.OllamaAccess;
+import org.rag4j.integration.ollama.OllamaChatService;
+import org.rag4j.integration.ollama.OllamaEmbedder;
 import org.rag4j.rag.embedding.Embedder;
 
 public class AppOllamaQuestionGenerator {

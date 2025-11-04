@@ -2,15 +2,15 @@ package org.rag4j.applications.indexing;
 
 import java.util.List;
 
-import com.azure.ai.openai.OpenAIClient;
+import com.openai.client.OpenAIClient;
 import org.rag4j.indexing.IndexingService;
 import org.rag4j.indexing.splitters.SentenceSplitter;
-import org.rag4j.integrations.openai.OpenAIEmbedder;
-import org.rag4j.integrations.openai.OpenAIFactory;
-import org.rag4j.integrations.weaviate.WeaviateAccess;
-import org.rag4j.integrations.weaviate.indexer.WeaviateChunkIndexer;
-import org.rag4j.integrations.weaviate.retrieval.WeaviateRetriever;
-import org.rag4j.integrations.weaviate.store.WeaviateContentStore;
+import org.rag4j.integration.openai.OpenAIEmbedder;
+import org.rag4j.integration.openai.OpenAIFactory;
+import org.rag4j.integration.weaviate.WeaviateAccess;
+import org.rag4j.integration.weaviate.indexer.WeaviateChunkIndexer;
+import org.rag4j.integration.weaviate.retrieval.WeaviateRetriever;
+import org.rag4j.integration.weaviate.store.WeaviateContentStore;
 import org.rag4j.rag.embedding.Embedder;
 import org.rag4j.rag.model.RelevantChunk;
 import org.rag4j.rag.retrieval.Retriever;

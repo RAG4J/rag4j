@@ -1,7 +1,7 @@
 package org.rag4j.applications.indexing;
 
 import io.weaviate.client.v1.schema.model.Property;
-import org.rag4j.integrations.weaviate.indexer.WeaviateChunkClassBuilder;
+import org.rag4j.integration.weaviate.indexer.WeaviateChunkClassBuilder;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package org.rag4j.applications.integration;
 
 import org.rag4j.util.keyloader.KeyLoader;
-import org.rag4j.integrations.weaviate.WeaviateAccess;
+import org.rag4j.integration.weaviate.WeaviateAccess;
 
 public class AppWeaviateInfo {
     public static void main(String[] args) {
