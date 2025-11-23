@@ -43,11 +43,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.source>21</maven.compiler.source>
-        <slf4j.version>2.0.7</slf4j.version>
-        <lombok.version>1.18.34</lombok.version>
-        <openai.version>4.7.1</openai.version>
-        <jackson.version>2.19.2</jackson.version>
+        <slf4j.version>2.0.17</slf4j.version>
+        <lombok.version>1.18.42</lombok.version>
+        <openai.version>4.8.0</openai.version>
+        <jackson.version>2.20.1</jackson.version>
         <mockito.version>5.20.0</mockito.version>
+        <junit.version>6.0.1</junit.version>
+        <commons-csv.version>1.14.1</commons-csv.version>
     </properties>
 
     <dependencyManagement>
@@ -157,15 +159,16 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-csv</artifactId>
-                <version>1.10.0</version>
+                <version>${commons-csv.version}</version>
             </dependency>
 
             <!-- Test dependencies -->
             <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
-                <version>5.11.3</version>
-                <scope>test</scope>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
             <dependency>
@@ -219,14 +222,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.junit.jupiter</groupId>
-                        <artifactId>junit-jupiter-engine</artifactId>
-                        <version>5.11.3</version>
-                    </dependency>
-                </dependencies>
+                <version>3.5.4</version>
             </plugin>
         </plugins>
     </build>
