@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.rag4j</groupId>
         <artifactId>rag4j-parent</artifactId>
-        <version>2.0.0</version>
+        <version>2.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
