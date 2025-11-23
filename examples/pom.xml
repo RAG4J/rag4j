@@ -1,0 +1,99 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.rag4j</groupId>
+        <artifactId>rag4j-parent</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>rag4j-examples</artifactId>
+    <packaging>jar</packaging>
+
+    <name>RAG4j ~ Examples</name>
+    <description>Example configuration for the Rag4j project.</description>
+
+    <dependencies>
+
+        <!-- Internal dependencies -->
+        <dependency>
+            <groupId>org.rag4j</groupId>
+            <artifactId>rag4j-utils</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.rag4j</groupId>
+            <artifactId>rag4j-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.rag4j</groupId>
+            <artifactId>rag4j-generator-question</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.rag4j</groupId>
+            <artifactId>rag4j-integration-ollama</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.rag4j</groupId>
+            <artifactId>rag4j-integration-openai</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.rag4j</groupId>
+            <artifactId>rag4j-integration-weaviate</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.rag4j</groupId>
+            <artifactId>rag4j-knowledge-extraction</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.rag4j</groupId>
+            <artifactId>rag4j-local-embedding</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.rag4j</groupId>
+            <artifactId>rag4j-local-store</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.rag4j</groupId>
+            <artifactId>rag4j-quality</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.rag4j</groupId>
+            <artifactId>rag4j-splitters</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+</project>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.rag4j</groupId>
+        <artifactId>rag4j-parent</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>rag4j-bom</artifactId>
+    <packaging>pom</packaging>
+
+    <name>RAG4j ~ BOM</name>
+    <description>Bill of Materials for rag4j - provides dependency management for all rag4j modules</description>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- rag4j Core Modules -->
+            <dependency>
+                <groupId>org.rag4j</groupId>
+                <artifactId>rag4j-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.rag4j</groupId>
+                <artifactId>rag4j-utils</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- rag4j Integration Modules -->
+            <dependency>
+                <groupId>org.rag4j</groupId>
+                <artifactId>rag4j-integration-ollama</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.rag4j</groupId>
+                <artifactId>rag4j-integration-openai</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.rag4j</groupId>
+                <artifactId>rag4j-integration-weaviate</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- rag4j Feature Modules -->
+            <dependency>
+                <groupId>org.rag4j</groupId>
+                <artifactId>rag4j-generator-question</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.rag4j</groupId>
+                <artifactId>rag4j-knowledge-extraction</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.rag4j</groupId>
+                <artifactId>rag4j-local-embedding</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.rag4j</groupId>
+                <artifactId>rag4j-local-store</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.rag4j</groupId>
+                <artifactId>rag4j-quality</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.rag4j</groupId>
+                <artifactId>rag4j-splitters</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- Common Third-Party Dependencies -->
+            <dependency>
+                <groupId>com.openai</groupId>
+                <artifactId>openai-java</artifactId>
+                <version>${openai.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-csv</artifactId>
+                <version>1.10.0</version>
+            </dependency>
+
+            <!-- Test Dependencies -->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>5.11.3</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-junit-jupiter</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
