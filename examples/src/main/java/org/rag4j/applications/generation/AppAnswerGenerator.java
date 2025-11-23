@@ -2,8 +2,8 @@ package org.rag4j.applications.generation;
 
 import com.openai.client.OpenAIClient;
 import org.rag4j.rag.generation.chat.ChatService;
-import org.rag4j.rag.generation.AnswerGenerator;
-import org.rag4j.rag.generation.ObservedAnswerGenerator;
+import org.rag4j.rag.generation.answer.AnswerGenerator;
+import org.rag4j.rag.generation.answer.ObservedAnswerGenerator;
 import org.rag4j.integration.openai.OpenAIChatService;
 import org.rag4j.integration.openai.OpenAIFactory;
 import org.rag4j.rag.generation.quality.AnswerQuality;

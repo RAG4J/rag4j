@@ -30,6 +30,11 @@
 
         <dependency>
             <groupId>org.rag4j</groupId>
+            <artifactId>rag4j-generator-question</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.rag4j</groupId>
             <artifactId>rag4j-integration-ollama</artifactId>
         </dependency>
 
@@ -45,12 +50,22 @@
 
         <dependency>
             <groupId>org.rag4j</groupId>
+            <artifactId>rag4j-knowledge-extraction</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.rag4j</groupId>
             <artifactId>rag4j-local-embedding</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.rag4j</groupId>
             <artifactId>rag4j-local-store</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.rag4j</groupId>
+            <artifactId>rag4j-quality</artifactId>
         </dependency>
 
         <dependency>

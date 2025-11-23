@@ -8,7 +8,7 @@ import org.rag4j.integration.ollama.OllamaChatService;
 import org.rag4j.integration.ollama.OllamaEmbedder;
 import org.rag4j.local.store.InternalContentStore;
 import org.rag4j.rag.embedding.Embedder;
-import org.rag4j.rag.generation.AnswerGenerator;
+import org.rag4j.rag.generation.answer.AnswerGenerator;
 import org.rag4j.rag.model.RelevantChunk;
 import org.rag4j.rag.retrieval.RetrievalOutput;
 import org.rag4j.rag.retrieval.strategies.DocumentRetrievalStrategy;

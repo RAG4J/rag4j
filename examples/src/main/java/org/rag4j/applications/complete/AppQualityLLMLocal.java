@@ -10,7 +10,7 @@ import org.rag4j.integration.openai.OpenAIEmbedder;
 import org.rag4j.integration.openai.OpenAIFactory;
 import org.rag4j.local.store.InternalContentStore;
 import org.rag4j.rag.embedding.Embedder;
-import org.rag4j.rag.generation.ObservedAnswerGenerator;
+import org.rag4j.rag.generation.answer.ObservedAnswerGenerator;
 import org.rag4j.rag.generation.chat.ChatService;
 import org.rag4j.rag.generation.quality.AnswerQuality;
 import org.rag4j.rag.generation.quality.AnswerQualityService;

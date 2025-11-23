@@ -1,4 +1,4 @@
-package org.rag4j.rag.generation;
+package org.rag4j.rag.generation.answer;
 
 import org.rag4j.rag.generation.chat.ChatService;
 import org.rag4j.rag.tracker.RAGTracker;

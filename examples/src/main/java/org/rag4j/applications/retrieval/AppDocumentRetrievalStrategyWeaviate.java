@@ -7,7 +7,7 @@ import org.rag4j.integration.openai.OpenAIFactory;
 import org.rag4j.integration.weaviate.WeaviateAccess;
 import org.rag4j.integration.weaviate.retrieval.WeaviateRetriever;
 import org.rag4j.rag.embedding.Embedder;
-import org.rag4j.rag.generation.AnswerGenerator;
+import org.rag4j.rag.generation.answer.AnswerGenerator;
 import org.rag4j.rag.retrieval.RetrievalOutput;
 import org.rag4j.rag.retrieval.RetrievalStrategy;
 import org.rag4j.rag.retrieval.Retriever;

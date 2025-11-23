@@ -1,6 +1,7 @@
 package org.rag4j.integration.openai;
 
 import com.openai.client.OpenAIClient;
+import com.openai.core.JsonString;
 import com.openai.models.chat.completions.ChatCompletion;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
 import com.openai.models.chat.completions.ChatCompletionMessage;
@@ -58,6 +59,7 @@ public class OpenAIChatService implements ChatService {
 
     @Override
     public String askForJsonResponse(ChatPrompt prompt) {
+        // TODO provide the schema to use for the json to return
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

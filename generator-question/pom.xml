@@ -9,22 +9,17 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>rag4j-splitters</artifactId>
+    <artifactId>rag4j-generator-question</artifactId>
     <packaging>jar</packaging>
 
-    <name>RAG4j ~ Splitters</name>
-    <description>Rag4j additional splitters.</description>
+    <name>RAG4j ~ Generator: question</name>
+    <description>Rag4j generator for questions.</description>
 
     <dependencies>
         <!-- Internal dependencies -->
         <dependency>
             <groupId>org.rag4j</groupId>
             <artifactId>rag4j-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.rag4j</groupId>
-            <artifactId>rag4j-knowledge-extraction</artifactId>
         </dependency>
 
         <dependency>
@@ -39,17 +34,6 @@
         </dependency>
 
         <!-- Additional dependencies -->
-        <dependency>
-            <groupId>com.knuddels</groupId>
-            <artifactId>jtokkit</artifactId>
-            <version>1.1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.opennlp</groupId>
-            <artifactId>opennlp-tools</artifactId>
-            <version>2.5.0</version>
-        </dependency>
 
 
         <!-- Test dependencies -->
